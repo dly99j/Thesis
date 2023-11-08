@@ -1,0 +1,3 @@
+/home/htamas/Dev/SDL/transforms/cmake-build-debug/CMakeFiles/transforms.dir
+/home/htamas/Dev/SDL/transforms/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/htamas/Dev/SDL/transforms/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,3 @@
+/home/htamas/Dev/SDL/lecture_01/cmake-build-debug/CMakeFiles/lecture_01.dir
+/home/htamas/Dev/SDL/lecture_01/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/htamas/Dev/SDL/lecture_01/cmake-build-debug/CMakeFiles/rebuild_cache.dir
