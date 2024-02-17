@@ -16,6 +16,7 @@ namespace spsh {
         m_bullets.emplace(direction::up, 6000.0f);
         m_bullets.emplace(direction::up, 6000.0f);
         m_bullets.emplace(direction::up, 6000.0f);
+        m_bullets.emplace(direction::up, 6000.0f);
     }
 
     auto player_ship::shoot() -> std::optional<projectile> {
