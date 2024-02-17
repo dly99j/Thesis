@@ -2,36 +2,37 @@
 // Created by htamas on 2023.11.08..
 //
 
-#ifndef TRANSFORMS_ABSTRACT_VECTOR_HPP
-#define TRANSFORMS_ABSTRACT_VECTOR_HPP
+#ifndef TRANSFORMS_GENERIC_VECTOR_HPP
+#define TRANSFORMS_GENERIC_VECTOR_HPP
 
 #include <cstddef>
 #include <array>
 #include <cmath>
 #include <ranges>
 #include <concepts>
+#include "utils.hpp"
 
-template<class T>
-concept floating_point_or_integral =  std::is_floating_point_v<T> || std::is_integral_v<T>;
-
-template<floating_point_or_integral Type, std::size_t Size>
-class abstract_vector {
+template<number Type, std::size_t Size>
+class generic_vector {
 
 public:
-    abstract_vector()                                                   : m_points({}) {}
-    explicit abstract_vector(const std::array<Type, Size> &t_points)    : m_points(t_points) {}
-    explicit abstract_vector(const std::array<Type, Size> &&t_points)   : m_points(std::move(t_points)) {}
+    explicit generic_vector(Type value = 0)                            { init_array(value); }
+    explicit generic_vector(const std::array<Type, Size> &t_points)    : m_points(t_points) {}
+    explicit generic_vector(const std::array<Type, Size> &&t_points)   : m_points(std::move(t_points)) {}
 
 public:
-    abstract_vector<Type, Size> operator+(const abstract_vector<Type, Size> &other);
-    abstract_vector<Type, Size> operator-(const abstract_vector<Type, Size> &other);
+    generic_vector<Type, Size> operator+(const generic_vector<Type, Size> &);
+    generic_vector<Type, Size> operator-(const generic_vector<Type, Size> &);
 
 public:
     std::size_t                     dimension() { return Size; }
     Type                            length();
-    Type                            distance_from(abstract_vector<Type, Size> &other);
-    Type                            scalar_product(abstract_vector<Type, Size> &other);
+    Type                            distance_from(generic_vector<Type, Size> &);
+    Type                            scalar_product(generic_vector<Type, Size> &);
     const std::array<double, Size>  get_points() const { return m_points; };
+
+private:
+    constexpr void init_array(Type = 0);
 
 protected:
     std::array<Type, Size> m_points;
@@ -44,16 +45,21 @@ protected:
  *
  * edit: I was wrong, 4-dimensional ones will be the most prominent
  * fuck me then
+ *
+ * why am i making a generic vector anyways... I'm only going to use
+ * one specific template instantiation
  */
 
-template<floating_point_or_integral Type, std::size_t Size>
-abstract_vector<Type, Size> abstract_vector<Type, Size>::operator+(const abstract_vector<Type, Size> &other) {
+//TODO possible constexpring, const correctness check?
+
+template<number Type, std::size_t Size>
+generic_vector<Type, Size> generic_vector<Type, Size>::operator+(const generic_vector<Type, Size> &other) {
     if constexpr (Size == 2) {
-        return abstract_vector<Type, Size>
+        return generic_vector<Type, Size>
                 (std::array{m_points[0] + other.m_points[0],
                             m_points[1] + other.m_points[1]});
     } else if constexpr (Size == 3) {
-        return abstract_vector<Type, Size>
+        return generic_vector<Type, Size>
                 (std::array{m_points[0] + other.m_points[0],
                             m_points[1] + other.m_points[1],
                             m_points[2] + other.m_points[2]});
@@ -62,18 +68,18 @@ abstract_vector<Type, Size> abstract_vector<Type, Size>::operator+(const abstrac
         for (std::size_t i = 0; i < Size; ++i) {
             new_points[i] = m_points[i] + other.m_points[i];
         }
-        return abstract_vector<Type, Size>{new_points};
+        return generic_vector<Type, Size>{new_points};
     }
 }
 
-template<floating_point_or_integral Type, std::size_t Size>
-abstract_vector<Type, Size> abstract_vector<Type, Size>::operator-(const abstract_vector<Type, Size> &other) {
+template<number Type, std::size_t Size>
+generic_vector<Type, Size> generic_vector<Type, Size>::operator-(const generic_vector<Type, Size> &other) {
     if constexpr (Size == 2) {
-        return abstract_vector<Type, Size>
+        return generic_vector<Type, Size>
                 (std::array{m_points[0] - other.m_points[0],
                             m_points[1] - other.m_points[1]});
     } else if constexpr (Size == 3) {
-        return abstract_vector<Type, Size>
+        return generic_vector<Type, Size>
                 (std::array{m_points[0] - other.m_points[0],
                             m_points[1] - other.m_points[1],
                             m_points[2] - other.m_points[2]});
@@ -82,12 +88,12 @@ abstract_vector<Type, Size> abstract_vector<Type, Size>::operator-(const abstrac
         for (std::size_t i = 0; i < Size; ++i) {
             new_points[i] = m_points[i] - other.m_points[i];
         }
-        return abstract_vector<Type, Size>{new_points};
+        return generic_vector<Type, Size>{new_points};
     }
 }
 
-template<floating_point_or_integral Type, std::size_t Size>
-Type abstract_vector<Type, Size>::length() {
+template<number Type, std::size_t Size>
+Type generic_vector<Type, Size>::length() {
     if constexpr (Size == 2) {
         return std::hypot(m_points[0], m_points[1]);
     } else if constexpr (Size == 3) {
@@ -102,8 +108,8 @@ Type abstract_vector<Type, Size>::length() {
 }
 
 
-template<floating_point_or_integral Type, std::size_t Size>
-Type abstract_vector<Type, Size>::distance_from(abstract_vector<Type, Size> &other) {
+template<number Type, std::size_t Size>
+Type generic_vector<Type, Size>::distance_from(generic_vector<Type, Size> &other) {
     if constexpr (Size == 2) {
         return std::hypot(m_points[0] - other.m_points[0],
                           m_points[1] - other.m_points[1]);
@@ -121,8 +127,8 @@ Type abstract_vector<Type, Size>::distance_from(abstract_vector<Type, Size> &oth
 }
 
 
-template<floating_point_or_integral Type, std::size_t Size>
-Type abstract_vector<Type, Size>::scalar_product(abstract_vector<Type, Size> &other) {
+template<number Type, std::size_t Size>
+Type generic_vector<Type, Size>::scalar_product(generic_vector<Type, Size> &other) {
     if constexpr (Size == 2) {
         return m_points[0] * other.m_points[0]
                + m_points[1] * other.m_points[1];
@@ -139,4 +145,12 @@ Type abstract_vector<Type, Size>::scalar_product(abstract_vector<Type, Size> &ot
     }
 }
 
-#endif //TRANSFORMS_ABSTRACT_VECTOR_HPP
+template<number Type, std::size_t Size>
+constexpr void generic_vector<Type, Size>::init_array(Type value) {
+    for (auto& i : m_points) {
+        i = value;
+    }
+}
+
+
+#endif //TRANSFORMS_GENERIC_VECTOR_HPP

@@ -27,6 +27,7 @@ public:
     static bool VisitDecl(clang::Decl *D) {
         if (D) {
             D->PrintStats();
+            D->
         }
         return true;
     }

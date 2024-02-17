@@ -5,10 +5,10 @@
 #ifndef TRANSFORMS_VEC_HPP
 #define TRANSFORMS_VEC_HPP
 
-#include "abstract_vector.hpp"
+#include "generic_vector.hpp"
 
-using vec2d = abstract_vector<double, 2>;
-using vec3d = abstract_vector<double, 3>;
-using vec4d = abstract_vector<double, 3>;
+using vec2d = generic_vector<double, 2>;
+using vec3d = generic_vector<double, 3>;
+using vec4d = generic_vector<double, 4>;
 
 #endif //TRANSFORMS_VEC_HPP
