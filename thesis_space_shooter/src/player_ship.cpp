@@ -7,7 +7,7 @@
 
 namespace spsh {
     player_ship::player_ship(direction t_direction, float t_speed, std::queue<projectile> t_bullets)
-        : movable(t_direction, t_speed), m_bullets(std::move(t_bullets)) {
+        : movable(t_direction, t_speed), m_bullets(std::move(t_bullets)), m_lives(2) {
         //TODO only for testing purposes
         /*
         m_bullets.emplace(direction::up, 2000.0f);
@@ -57,5 +57,13 @@ namespace spsh {
         if (get_position().y + texture_y > window_y) {
             set_position({get_position().x, window_y - texture_y});
         }
+    }
+
+    auto player_ship::decrease_life(short t_decrease_by) -> void {
+        m_lives -= t_decrease_by;
+    }
+
+    auto player_ship::is_alive() const -> bool {
+        return m_lives > 0;
     }
 } // spsh

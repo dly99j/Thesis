@@ -15,9 +15,8 @@ namespace spsh {
 
         virtual ~movable();
 
-        //TODO refactor
-        bool operator==(movable& other) { return this == &other; }
-        bool operator==(const movable& other) const { return this == &other; }
+        [[nodiscard]]
+        auto operator==(const movable& other) const -> bool;
 
         [[nodiscard]]
         auto get_speed() const -> float;

@@ -31,6 +31,8 @@ namespace spsh {
 
         auto handle_collision(std::vector<projectile>&) -> void;
 
+        auto handle_lifetime() -> void;
+
         auto send_asteroid_if_needed() -> void;
 
         auto generate_asteroid_x() const -> float;

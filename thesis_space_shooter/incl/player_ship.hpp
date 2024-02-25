@@ -10,16 +10,20 @@ namespace spsh {
     class player_ship : public movable {
     public:
         //TODO default param is temporary right now, might need fix
-        explicit player_ship(direction, float,
-                             std::queue<projectile>  = std::queue<projectile>());
+        explicit player_ship(direction, float, std::queue<projectile> = {});
 
         [[nodiscard]]
         auto shoot() -> std::optional<projectile>;
 
         auto put_back_on_map(const std::unique_ptr<sf::Vector2u>& t_window_size) -> void;
 
+        auto decrease_life(short = 1) -> void;
+
+        auto is_alive() const -> bool;
+
     private:
         std::queue<projectile> m_bullets;
+        short m_lives;
     };
 } // spsh
 

@@ -12,6 +12,13 @@ namespace spsh {
 
     movable::~movable() = default;
 
+    auto movable::operator==(const movable& other) const -> bool {
+        return this->get_direction() == other.get_direction() &&
+               this->get_speed() == other.get_speed() &&
+               this->get_texture_rect() == other.get_texture_rect() &&
+               this->get_position() == other.get_position();
+    }
+
     auto movable::get_speed() const -> float {
         return m_speed;
     }
@@ -24,10 +31,13 @@ namespace spsh {
         return m_texture.getPosition();
     }
 
+    //TODO we should probably make the rect smaller
     auto movable::get_texture_rect() const -> sf::FloatRect {
-        auto&& [top, left] = get_position();
-        auto&& rect = m_texture.getTextureRect();
-        return {top, left, static_cast<float>(rect.width), static_cast<float>(rect.height)};
+        const auto& [top, left] = get_position();
+        const auto& rect = m_texture.getTextureRect();
+        const auto& width = static_cast<float>(rect.width);
+        const auto& height = static_cast<float>(rect.width);
+        return {left - width/4.0f, top - height/4.0f, width/2.0f, height/4.0f*3.0f};
     }
 
     auto movable::get_texture_size() const -> sf::Vector2u {

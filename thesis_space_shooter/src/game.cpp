@@ -34,6 +34,7 @@ namespace spsh {
                 update(delta_time);
             }
             detect_collision();
+            handle_lifetime();
             render();
         }
     }
@@ -124,9 +125,16 @@ namespace spsh {
                 movement.x += 0.0f;
             } //TODO else error handling(?)
             i.move(movement * t_delta_time.asSeconds());
-            (void) std::ranges::remove_if(m_projectiles, [size = m_window.getSize()](const projectile& proj) {
-                return proj.is_off_map(std::make_unique<sf::Vector2u>(size));
-            });
+            //(void) std::ranges::remove_if(m_projectiles, [size = m_window.getSize()](const projectile& proj) {
+            //    return proj.is_off_map(std::make_unique<sf::Vector2u>(size));
+            //});
+            //TODO ranges version above is much nicer, but doesn't work. why??
+            for (auto it = m_projectiles.begin(); it != m_projectiles.end(); ++it) {
+                if (it->is_off_map(std::make_unique<sf::Vector2u>(m_window.getSize()))) {
+                    it = m_projectiles.erase(it);
+                    --it;
+                }
+            }
         }
     }
 
@@ -135,20 +143,33 @@ namespace spsh {
         for (auto& proj : m_projectiles) {
             if (m_player.get_texture_rect().intersects(proj.get_texture_rect())) {
                 collided.push_back(proj);
+                m_player.decrease_life();
             }
         }
-        handle_collision(collided);
+        if (!collided.empty()) {
+            std::clog << "coll\n";
+            handle_collision(collided);
+        }
     }
 
     auto game::handle_collision(std::vector<projectile>& t_proj) -> void {
-        (void) std::ranges::remove_if(m_projectiles, [&t_proj](const projectile& proj) {
-            //return proj.get_speed() == 100.f && t_proj.empty();
-            return std::find(t_proj.begin(), t_proj.end(), proj) == t_proj.end();
-            for (auto& i : t_proj)
-                if (i == proj)
-                    return true;
-            return false;
-        });
+        //(void) std::ranges::remove_if(m_projectiles, [&t_proj](const projectile& proj) {
+        //    //return std::find(t_proj.begin(), t_proj.end(), proj) != t_proj.end();
+        //});
+        //TODO ranges version above is much nicer, but doesn't work. why??
+        for (auto it = m_projectiles.begin(); it != m_projectiles.end(); ++it) {
+            if (std::find(t_proj.begin(), t_proj.end(), *it) != t_proj.end()) {
+                it = m_projectiles.erase(it);
+                --it;
+            }
+        }
+    }
+
+    auto game::handle_lifetime() -> void {
+        if (m_player.is_alive()) {
+            return;
+        }
+        exit(1);
     }
 
     auto game::send_asteroid_if_needed() -> void {
