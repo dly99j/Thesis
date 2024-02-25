@@ -1,5 +1,7 @@
 #ifndef MOVABLE_HPP
 #define MOVABLE_HPP
+#include <memory>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace spsh {
@@ -13,21 +15,27 @@ namespace spsh {
 
         virtual ~movable();
 
-        [[nodiscard]]
-        auto get_speed() const -> const float;
+        //TODO refactor
+        bool operator==(movable& other) { return this == &other; }
+        bool operator==(const movable& other) const { return this == &other; }
 
         [[nodiscard]]
-        auto get_direction() const -> const direction;
+        auto get_speed() const -> float;
 
         [[nodiscard]]
-        auto get_position() const -> const sf::Vector2f;
+        auto get_direction() const -> direction;
+
+        [[nodiscard]]
+        auto get_position() const -> sf::Vector2f;
+
+        [[nodiscard]]
+        auto get_texture_rect() const -> sf::FloatRect;
+
+        auto get_texture_size() const -> sf::Vector2u;
 
         auto set_dierction(direction) -> void;
 
         auto set_texture(sf::Texture&) -> void;
-
-        //TODO remove float variant possibly?
-        auto set_position(float, float) -> void;
 
         //TODO copy vs reference?
         auto set_position(sf::Vector2f) -> void;
@@ -35,10 +43,15 @@ namespace spsh {
         virtual auto draw(sf::RenderTarget&) -> void;
 
         auto move(sf::Vector2f) -> void;
+
+        [[nodiscard]]
+        auto is_off_map(const std::unique_ptr<sf::Vector2u>& t_window_size) const -> bool;
+
     private:
-        sf::Sprite m_object;
-        spsh::direction m_direction;
-        const float m_speed;
+        sf::Sprite m_texture;
+        direction m_direction;
+        //TODO this was originally const but remove_if needs assignment operator. fix? or is it good as non const?
+        float m_speed;
     };
 } // spsh
 

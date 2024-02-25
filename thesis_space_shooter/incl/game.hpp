@@ -1,12 +1,13 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include <vector>
+
 #include "player_ship.hpp"
 
 namespace spsh {
-
     class game {
     public:
         game();
@@ -23,10 +24,21 @@ namespace spsh {
         auto handle_input(sf::Keyboard::Key, bool) -> void;
 
         auto move_player(sf::Time) -> void;
+
         auto move_projectiles(sf::Time) -> void;
 
+        auto detect_collision() -> void;
+
+        auto handle_collision(std::vector<projectile>&) -> void;
+
+        auto send_asteroid_if_needed() -> void;
+
+        auto generate_asteroid_x() const -> float;
+
     private: /*variables*/
-        const sf::Time c_frame_time = sf::seconds(1.0f / 60.0f);
+        const sf::Time c_frame_time = sf::seconds(1.0f / 300.0f);
+        sf::Time m_time_since_startup;
+        sf::Clock m_global_clock; //TODO better name?
 
         sf::RenderWindow m_window;
         sf::Texture m_player_texture;
