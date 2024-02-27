@@ -21,7 +21,7 @@ namespace spsh {
 
         auto render() -> void;
 
-        auto handle_input(sf::Keyboard::Key, bool) -> void;
+        auto handle_input(bool) -> void;
 
         auto move_player(sf::Time) -> void;
 
@@ -38,7 +38,7 @@ namespace spsh {
         [[nodiscard]]
         auto generate_asteroid_x() const -> float;
 
-    private: /*variables*/
+    private:
         const sf::Time c_frame_time = sf::seconds(1.0f / 300.0f);
         sf::Time m_time_since_startup;
         sf::Clock m_global_clock; //TODO better name?

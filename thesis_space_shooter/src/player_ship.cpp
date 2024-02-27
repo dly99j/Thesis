@@ -35,7 +35,6 @@ namespace spsh {
         auto proj = m_bullets.back();
         m_bullets.pop(); //TODO nicer solution that requires no copy?
         auto pos = this->get_position();
-        std::clog << pos.x << "   " << pos.y << std::endl;
         pos.x += static_cast<float>(this->get_texture_size().x) / 4.0f; //TODO this is ugly as fuck but it works
         pos.y -= static_cast<float>(proj.get_texture_size().y);
         proj.set_position(pos);
