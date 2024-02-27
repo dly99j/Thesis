@@ -10,15 +10,18 @@ namespace spsh {
         : m_time_since_startup(sf::Time::Zero)
           , m_window(sf::VideoMode(640, 480), "SpaceShooter", sf::Style::Close)
           , m_player(direction::stationary, 1000.0f) {
-        if (!m_player_texture.loadFromFile("../media/eagle.png")) {
-            std::cerr << "error loading player\n";
-        }
-        if (!m_projectile_texture.loadFromFile("../media/basic_red_dot.png")) {
+
+
+        if (!m_asteroid_texture.loadFromFile("../media/basic_blue_dot.png")) {
             std::cerr << "error loading bullet\n";
         }
+
         m_global_clock.restart();
-        m_player.set_texture(m_player_texture);
-        m_player.set_position({100.0f, 100.0f});
+
+        auto window_width = static_cast<float>(m_window.getSize().x);
+        auto window_height = static_cast<float>(m_window.getSize().y);
+        //TODO center correctly
+        m_player.set_position({window_width / 2.0f, window_height - window_height / 10.0f});
     }
 
     auto game::run() -> void {
@@ -64,9 +67,13 @@ namespace spsh {
         for (auto&& i: m_projectiles) {
             i.draw(m_window);
         }
+        m_window.draw(m_player.get_lifecounter_text());
+        m_window.draw(m_player.get_ammo_text());
         m_window.display();
     }
 
+    //TODO completely rewrite if I want it to go diagonally
+    // https://en.sfml-dev.org/forums/index.php?topic=22285.0
     auto game::handle_input(sf::Keyboard::Key t_key, bool t_is_pressed) -> void {
         if (!t_is_pressed) {
             m_player.set_dierction(direction::stationary);
@@ -81,7 +88,6 @@ namespace spsh {
         } else if (t_key == sf::Keyboard::Space) {
             auto&& proj = m_player.shoot();
             if (proj.has_value()) {
-                proj.value().set_texture(m_projectile_texture);
                 m_projectiles.push_back(proj.value());
             }
         }
@@ -89,6 +95,10 @@ namespace spsh {
 
     auto game::move_player(sf::Time t_delta_time) -> void {
         sf::Vector2f movement;
+        //auto move_up = [&](){movement.y -= m_player.get_speed();};
+        //auto move_right = [&](){movement.x += m_player.get_speed();};
+        //auto move_down = [&](){movement.y += m_player.get_speed();};
+        //auto move_left = [&](){movement.x -= m_player.get_speed();};
         if (m_player.get_direction() == direction::up) {
             movement.y -= m_player.get_speed();
         } else if (m_player.get_direction() == direction::right) {
@@ -142,6 +152,8 @@ namespace spsh {
         std::vector<projectile> collided;
         for (auto& proj : m_projectiles) {
             if (m_player.get_texture_rect().intersects(proj.get_texture_rect())) {
+                std::clog << m_player.get_texture_rect().top << "  " << m_player.get_texture_rect().left << std::endl;
+                std::clog << proj.get_texture_rect().top - proj.get_texture_rect().height << "  " << proj.get_texture_rect().left - proj.get_texture_rect().width << std::endl;
                 collided.push_back(proj);
                 m_player.decrease_life();
             }
@@ -179,7 +191,7 @@ namespace spsh {
         }
         m_time_since_startup = m_global_clock.getElapsedTime();
         projectile ast(direction::down, 2000.0f);
-        ast.set_texture(m_projectile_texture);
+        ast.set_texture(m_asteroid_texture);
         ast.set_position({generate_asteroid_x(), 0.0f});
         m_projectiles.push_back(ast);
     }
@@ -188,7 +200,7 @@ namespace spsh {
         std::random_device random_device;
         std::mt19937 random_engine(random_device());
         std::uniform_real_distribution<float>
-            dist(0.0f, static_cast<float>(m_window.getSize().x) - static_cast<float>(m_projectile_texture.getSize().x));
+            dist(0.0f, static_cast<float>(m_window.getSize().x) - static_cast<float>(m_asteroid_texture.getSize().x));
 
         return dist(random_engine);
     }

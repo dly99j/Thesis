@@ -35,6 +35,7 @@ namespace spsh {
 
         auto send_asteroid_if_needed() -> void;
 
+        [[nodiscard]]
         auto generate_asteroid_x() const -> float;
 
     private: /*variables*/
@@ -43,8 +44,7 @@ namespace spsh {
         sf::Clock m_global_clock; //TODO better name?
 
         sf::RenderWindow m_window;
-        sf::Texture m_player_texture;
-        sf::Texture m_projectile_texture;
+        sf::Texture m_asteroid_texture;
 
         player_ship m_player;
         std::vector<projectile> m_projectiles;

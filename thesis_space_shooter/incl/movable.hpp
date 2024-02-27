@@ -6,7 +6,7 @@
 
 namespace spsh {
     enum class direction {
-        up, right, down, left, stationary
+        up, up_right, right, down_right, down, down_left, left, up_left, stationary
     };
 
     class movable {
