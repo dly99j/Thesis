@@ -6,14 +6,14 @@
 #include <SFML/Graphics/Texture.hpp>
 
 namespace spsh {
-    player_ship::player_ship(direction t_direction, float t_speed,
-        std::queue<projectile> t_bullets, short t_lives, std::size_t t_init_ammo_cnt)
-        : movable(t_direction, t_speed), m_bullets(std::move(t_bullets)), m_lives(t_lives) {
+    player_ship::player_ship(direction t_direction, float t_speed, short t_lives,
+        std::queue<projectile> t_bullets, std::size_t t_init_ammo_cnt)
+        : ship_base(t_direction, t_speed, t_lives), m_bullets(std::move(t_bullets)) {
 
-        if (!m_player_texture.loadFromFile("../media/eagle.png")) {
+        if (!m_texture.loadFromFile("../media/eagle.png")) {
             std::cerr << "error loading player\n";
         }
-        set_texture(m_player_texture);
+        set_texture(m_texture);
 
         if (!m_font.loadFromFile("../media/sansation.ttf")) {
             std::cerr << "error loading font\n";
@@ -24,7 +24,7 @@ namespace spsh {
 
         //TODO only for testing purposes
         for (std::size_t i = 0; i < t_init_ammo_cnt; ++i) {
-            m_bullets.emplace(direction::up, 2000.0f);
+            m_bullets.emplace(direction::up, 2000.0f, projectile_type::rocket);
         }
     }
 
@@ -39,42 +39,6 @@ namespace spsh {
         pos.y -= static_cast<float>(proj.get_texture_size().y);
         proj.set_position(pos);
         return {proj};
-    }
-
-    auto player_ship::put_back_on_map(const std::unique_ptr<sf::Vector2u>& t_window_size) -> void {
-        if (!is_off_map(t_window_size)) {
-            return;
-        }
-
-        const auto window_x = static_cast<float>(t_window_size->x);
-        const auto window_y = static_cast<float>(t_window_size->y);
-        const auto texture_x = static_cast<float>(get_texture_size().x);
-        const auto texture_y = static_cast<float>(get_texture_size().y);
-
-        if (get_position().x < 0.0f) {
-            set_position({0.0f, get_position().y});
-        }
-        if (get_position().y < 0.0f) {
-            set_position({get_position().x, 0.0f});
-        }
-        if (get_position().x + texture_x > window_x) {
-            set_position({window_x - texture_x, get_position().y});
-        }
-        if (get_position().y + texture_y > window_y) {
-            set_position({get_position().x, window_y - texture_y});
-        }
-    }
-
-    auto player_ship::decrease_life(short t_decrease_by) -> void {
-        m_lives -= t_decrease_by;
-    }
-
-    auto player_ship::get_lives() const -> short {
-        return m_lives;
-    }
-
-    auto player_ship::is_alive() const -> bool {
-        return m_lives > 0;
     }
 
     auto player_ship::get_lifecounter_text() -> sf::Text {

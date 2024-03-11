@@ -8,8 +8,9 @@
 namespace spsh {
     game::game()
         : m_time_since_startup(sf::Time::Zero)
-          , m_window(sf::VideoMode(640, 480), "SpaceShooter", sf::Style::Close)
-          , m_player(direction::stationary, 1000.0f) {
+          , m_window(sf::VideoMode(800, 600), "SpaceShooter", sf::Style::Close)
+          , m_player(direction::stationary, 1000.0f)
+          , m_enemy(direction::stationary, 1000.0f) {
         if (!m_asteroid_texture.loadFromFile("../media/basic_blue_dot.png")) {
             std::cerr << "error loading bullet\n";
         }
@@ -19,9 +20,11 @@ namespace spsh {
         auto window_width = static_cast<float>(m_window.getSize().x);
         auto window_height = static_cast<float>(m_window.getSize().y);
         auto player_width = static_cast<float>(m_player.get_texture_rect().width);
-        //dauto player_height = static_cast<float>(m_player.get_texture_rect().height);
+        auto enemy_width = static_cast<float>(m_enemy.get_texture_rect().width);
+        //auto player_height = static_cast<float>(m_player.get_texture_rect().height);
         //TODO center correctly
         m_player.set_position({window_width / 2.0f - player_width / 2.0f, window_height - window_height / 10.0f});
+        m_enemy.set_position({window_width / 2.0f - enemy_width / 2.0f, window_height / 10.0f});
     }
 
     auto game::run() -> void {
@@ -58,12 +61,15 @@ namespace spsh {
     auto game::update(sf::Time t_delta_time) -> void {
         move_player(t_delta_time);
         move_projectiles(t_delta_time);
+        move_enemy(t_delta_time);
         send_asteroid_if_needed();
+        m_enemy.send_projectile_if_needed();
     }
 
     auto game::render() -> void {
         m_window.clear();
         m_player.draw(m_window);
+        m_enemy.draw(m_window);
         for (auto&& i: m_projectiles) {
             i.draw(m_window);
         }
@@ -93,18 +99,18 @@ namespace spsh {
             directions.push_back(direction::right);
         }
 
-        auto is_in_vec = [&directions](direction d) {
+        const auto is_in_vec = [&directions](direction d) {
             return std::ranges::find(directions, d) != directions.end();
         };
 
-        auto up_down_pressed = [&is_in_vec]() {
+        const auto up_down_pressed = [&is_in_vec]() {
             if (is_in_vec(direction::up) && is_in_vec(direction::down)) {
                 return true;
             }
             return false;
         };
 
-        auto left_right_pressed = [&is_in_vec]() {
+        const auto left_right_pressed = [&is_in_vec]() {
             if (is_in_vec(direction::left) && is_in_vec(direction::right)) {
                 return true;
             }
@@ -154,36 +160,10 @@ namespace spsh {
         }
     }
 
+    //TODO refactor to ship_base/player_ship
     auto game::move_player(sf::Time t_delta_time) -> void {
-        sf::Vector2f movement;
 
-        //TODO is readability worth so many fn calls??
-        //optimalization? does it eliminate fn calls and object creations?
-        auto move_up = [&]() { movement.y -= m_player.get_speed(); };
-        auto move_right = [&]() { movement.x += m_player.get_speed(); };
-        auto move_down = [&]() { movement.y += m_player.get_speed(); };
-        auto move_left = [&]() { movement.x -= m_player.get_speed(); };
-        if (m_player.get_direction() == direction::up) {
-            move_up();
-        } else if (m_player.get_direction() == direction::right) {
-            move_right();
-        } else if (m_player.get_direction() == direction::down) {
-            move_down();
-        } else if (m_player.get_direction() == direction::left) {
-            move_left();
-        } else if (m_player.get_direction() == direction::up_left) {
-            move_up();
-            move_left();
-        } else if (m_player.get_direction() == direction::up_right) {
-            move_up();
-            move_right();
-        } else if (m_player.get_direction() == direction::down_left) {
-            move_down();
-            move_left();
-        } else if (m_player.get_direction() == direction::down_right) {
-            move_down();
-            move_right();
-        }
+        auto movement = m_player.calculate_move();
 
         if (m_player.is_off_map(std::make_unique<sf::Vector2u>(m_window.getSize()))) {
             m_player.put_back_on_map(std::make_unique<sf::Vector2u>(m_window.getSize()));
@@ -194,28 +174,24 @@ namespace spsh {
 
     auto game::move_projectiles(sf::Time t_delta_time) -> void {
         for (auto&& i: m_projectiles) {
-            sf::Vector2f movement;
-            if (i.get_direction() == direction::up) {
-                movement.y -= i.get_speed();
-            } else if (i.get_direction() == direction::right) {
-                movement.x += i.get_speed();
-            } else if (i.get_direction() == direction::down) {
-                movement.y += i.get_speed();
-            } else if (i.get_direction() == direction::left) {
-                movement.x -= i.get_speed();
-            }
+            auto movement = i.calculate_move();
             i.move(movement * t_delta_time.asSeconds());
-            //(void) std::ranges::remove_if(m_projectiles, [size = m_window.getSize()](const projectile& proj) {
-            //    return proj.is_off_map(std::make_unique<sf::Vector2u>(size));
-            //});
-            //TODO ranges version above is much nicer, but doesn't work. why??
-            for (auto it = m_projectiles.begin(); it != m_projectiles.end(); ++it) {
-                if (it->is_off_map(std::make_unique<sf::Vector2u>(m_window.getSize()))) {
-                    it = m_projectiles.erase(it);
-                    --it;
-                }
+        }
+        std::erase_if(m_projectiles, [size = m_window.getSize()](const projectile& proj) {
+            return proj.is_off_map(std::make_unique<sf::Vector2u>(size));
+        });;
+        /*
+         *i leave this here just in case something breaks
+        for (auto it = m_projectiles.begin(); it != m_projectiles.end(); ++it) {
+            if (it->is_off_map(std::make_unique<sf::Vector2u>(m_window.getSize()))) {
+                it = m_projectiles.erase(it);
+                --it;
             }
         }
+        */
+    }
+
+    auto game::move_enemy(sf::Time) -> void {
     }
 
     auto game::detect_collision() -> void {
@@ -225,31 +201,31 @@ namespace spsh {
                 collided.push_back(proj);
                 m_player.decrease_life();
             }
+            //TODO increase enemy texture rect
+            else if (m_enemy.get_texture_rect().intersects(proj.get_texture_rect()) &&
+                     proj.get_type() == projectile_type::rocket) {
+                collided.push_back(proj);
+                m_enemy.decrease_life();
+            }
         }
         if (!collided.empty()) {
-            std::clog << "coll\n";
             handle_collision(collided);
         }
     }
 
     auto game::handle_collision(std::vector<projectile>& t_proj) -> void {
-        //(void) std::ranges::remove_if(m_projectiles, [&t_proj](const projectile& proj) {
-        //    //return std::find(t_proj.begin(), t_proj.end(), proj) != t_proj.end();
-        //});
-        //TODO ranges version above is much nicer, but doesn't work. why??
-        for (auto it = m_projectiles.begin(); it != m_projectiles.end(); ++it) {
-            if (std::find(t_proj.begin(), t_proj.end(), *it) != t_proj.end()) {
-                it = m_projectiles.erase(it);
-                --it;
-            }
-        }
+        std::erase_if(m_projectiles, [&t_proj](const projectile& proj) {
+            return std::find(t_proj.begin(), t_proj.end(), proj) != t_proj.end();
+        });
     }
 
     auto game::handle_lifetime() -> void {
-        if (m_player.is_alive()) {
-            return;
+        if (!m_player.is_alive()) {
+            exit(1);
         }
-        exit(1);
+        if (!m_enemy.is_alive()) {
+            exit(2);
+        }
     }
 
     auto game::send_asteroid_if_needed() -> void {
@@ -258,7 +234,7 @@ namespace spsh {
             return;
         }
         m_time_since_startup = m_global_clock.getElapsedTime();
-        projectile ast(direction::down, 2000.0f);
+        projectile ast(direction::down, 2000.0f, projectile_type::asteroid);
         ast.set_texture(m_asteroid_texture);
         ast.set_position({generate_asteroid_x(), 0.0f});
         m_projectiles.push_back(ast);

@@ -4,27 +4,17 @@
 #include <queue>
 #include <SFML/Graphics/Text.hpp>
 
-#include "movable.hpp"
 #include "projectile.hpp"
+#include "ship_base.hpp"
 
 namespace spsh {
-    class player_ship : public movable {
+    class player_ship : public ship_base {
     public:
         //TODO default param is temporary right now, might need fix
-        explicit player_ship(direction, float, std::queue<projectile> = {}, short = 3, std::size_t = 10);
+        explicit player_ship(direction, float, short = 3, std::queue<projectile> = {}, std::size_t = 10);
 
         [[nodiscard]]
-        auto shoot() -> std::optional<projectile>;
-
-        auto put_back_on_map(const std::unique_ptr<sf::Vector2u>& t_window_size) -> void;
-
-        auto decrease_life(short = 1) -> void;
-
-        [[nodiscard]]
-        auto get_lives() const -> short;
-
-        [[nodiscard]]
-        auto is_alive() const -> bool;
+        auto shoot() -> std::optional<projectile> override;
 
         [[nodiscard]]
         auto get_lifecounter_text() -> sf::Text;
@@ -42,13 +32,11 @@ namespace spsh {
         auto update_ammo_text() -> void;
 
     private:
-        sf::Texture m_player_texture;
         sf::Font m_font;
         sf::Text m_lifecounter_text;
         sf::Text m_ammo_text;
 
         std::queue<projectile> m_bullets;
-        short m_lives;
     };
 } // spsh
 

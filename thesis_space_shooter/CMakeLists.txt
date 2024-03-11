@@ -22,6 +22,10 @@ add_executable(thesis_space_shooter src/main.cpp
         incl/player_ship.hpp
         incl/projectile.hpp
         src/projectile.cpp
+        src/enemy_ship.cpp
+        incl/enemy_ship.hpp
+        src/ship_base.cpp
+        incl/ship_base.hpp
 )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 target_link_libraries(thesis_space_shooter LLVM-17 clang-cpp sfml-graphics sfml-window sfml-system)

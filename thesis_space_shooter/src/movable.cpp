@@ -1,5 +1,6 @@
 #include "../incl/movable.hpp"
 
+#include <forward_list>
 #include <iostream>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -58,6 +59,47 @@ namespace spsh {
 
     auto movable::draw(sf::RenderTarget& t_target) -> void {
         t_target.draw(m_texture);
+    }
+
+    auto movable::calculate_move() const -> sf::Vector2f {
+        sf::Vector2f movement;
+        constexpr float sqrt_two = 1.41421;
+
+        const auto move_up = [&](bool is_diag) {
+            is_diag ? movement.y -= get_speed() / sqrt_two : movement.y -= get_speed();
+        };
+        const auto move_right = [&](bool is_diag) {
+            is_diag ? movement.x += get_speed() / sqrt_two : movement.x += get_speed();
+        };
+        const auto move_down = [&](bool is_diag) {
+            is_diag ? movement.y += get_speed() / sqrt_two : movement.y += get_speed();
+        };
+        const auto move_left = [&](bool is_diag) {
+            is_diag ? movement.x -= get_speed() / sqrt_two : movement.x -= get_speed();
+        };
+
+        if (get_direction() == direction::up) {
+            move_up(false);
+        } else if (get_direction() == direction::right) {
+            move_right(false);
+        } else if (get_direction() == direction::down) {
+            move_down(false);
+        } else if (get_direction() == direction::left) {
+            move_left(false);
+        } else if (get_direction() == direction::up_left) {
+            move_up(true);
+            move_left(true);
+        } else if (get_direction() == direction::up_right) {
+            move_up(true);
+            move_right(true);
+        } else if (get_direction() == direction::down_left) {
+            move_down(true);
+            move_left(true);
+        } else if (get_direction() == direction::down_right) {
+            move_down(true);
+            move_right(true);
+        }
+        return movement;
     }
 
     auto movable::move(sf::Vector2f t_movement) -> void {

@@ -41,6 +41,8 @@ namespace spsh {
 
         virtual auto draw(sf::RenderTarget&) -> void;
 
+        auto calculate_move() const -> sf::Vector2f;
+
         auto move(sf::Vector2f) -> void;
 
         [[nodiscard]]

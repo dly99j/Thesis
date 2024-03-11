@@ -1,5 +1,0 @@
-# ninja log v5
-1032	1145	1699534511804453292	transforms	a75fd0bd3ea20c71
-0	1032	1699534511688452284	CMakeFiles/transforms.dir/main.cpp.o	918bdda82f5cf98d
-1	1404	1702667795857937569	CMakeFiles/transforms.dir/main.cpp.o	918bdda82f5cf98d
-1404	1572	1702667796025977029	transforms	a75fd0bd3ea20c71

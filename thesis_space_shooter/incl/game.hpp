@@ -1,10 +1,10 @@
 #ifndef GAME_HPP
 #define GAME_HPP
-
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "enemy_ship.hpp"
 #include "player_ship.hpp"
 
 namespace spsh {
@@ -27,6 +27,8 @@ namespace spsh {
 
         auto move_projectiles(sf::Time) -> void;
 
+        auto move_enemy(sf::Time) -> void;
+
         auto detect_collision() -> void;
 
         auto handle_collision(std::vector<projectile>&) -> void;
@@ -47,6 +49,7 @@ namespace spsh {
         sf::Texture m_asteroid_texture;
 
         player_ship m_player;
+        enemy_ship m_enemy;
         std::vector<projectile> m_projectiles;
     };
 } // spsh

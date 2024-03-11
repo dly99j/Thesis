@@ -1,8 +1,0 @@
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/intrinsics_gen.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/omp_gen.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/acc_gen.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/RISCVTargetParserTableGen.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/clang-tablegen-targets.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/Thesis.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/htamas/Dev/Thesis/cmake-build-debug/CMakeFiles/rebuild_cache.dir
