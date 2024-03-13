@@ -7,12 +7,12 @@ namespace spsh {
     enemy_ship::enemy_ship(direction t_direction, float t_speed, short t_lives)
         : ship_base(t_direction, t_speed, t_lives)
           , m_time_since_alive(sf::Time::Zero) {
-        if (!m_texture.loadFromFile("../media/eagle_rotated.png")) {
+        if (!m_texture.loadFromFile("../media/enemy_ship_one.png")) {
             std::cerr << "error loading player\n";
         }
         set_texture(m_texture);
 
-        if (!m_bullet_texture.loadFromFile("../media/basic_yellow_dot.png")) {
+        if (!m_bullet_texture.loadFromFile("../media/enemy_missile.png")) {
             std::cerr << "error loading bullet\n";
         }
 
@@ -31,8 +31,9 @@ namespace spsh {
         auto proj = projectile(direction::down, 2000.0f, projectile_type::rocket);
         proj.set_texture(m_bullet_texture);
         auto pos = this->get_position();
-        pos.x += static_cast<float>(this->get_texture_size().x) / 4.0f; //TODO this is ugly as fuck but it works
-        pos.y += static_cast<float>(proj.get_texture_size().y) + this->get_texture_rect().height;
+        pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f
+                - static_cast<float>(proj.get_texture_size().x)/ 2.0f;
+        pos.y += this->get_texture_rect().height;
         proj.set_position(pos);
         return {proj};
     }

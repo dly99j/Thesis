@@ -10,12 +10,13 @@
 namespace spsh {
     game::game()
         : m_time_since_startup(sf::Time::Zero)
-          , m_window(sf::VideoMode(800, 600), "SpaceShooter", sf::Style::Close)
+          , m_window(sf::VideoMode(1280, 960), "SpaceShooter", sf::Style::Close)
           , m_player(direction::stationary, 1000.0f)
           , m_enemy(std::make_unique<avoiding_enemy>(direction::stationary)) {
-        if (!m_asteroid_texture.loadFromFile("../media/basic_blue_dot.png")) {
+        if (!m_asteroid_texture.loadFromFile("../media/asteroid.png")) {
             std::cerr << "error loading bullet\n";
         }
+        set_background();
 
         m_global_clock.restart();
 
@@ -68,6 +69,7 @@ namespace spsh {
 
     auto game::render() -> void {
         m_window.clear();
+        m_window.draw(m_background_sprite);
         m_player.draw(m_window);
         m_enemy->draw(m_window);
         for (auto&& i: m_projectiles) {
@@ -76,6 +78,15 @@ namespace spsh {
         m_window.draw(m_player.get_lifecounter_text());
         m_window.draw(m_player.get_ammo_text());
         m_window.display();
+    }
+
+    auto game::set_background() -> void {
+        if (!m_background_texture.loadFromFile("../media/bg.jpg")) {
+            std::cerr << "error loading background!\n";
+        }
+        //auto [x, y] = m_background_texture.getSize();
+        m_background_sprite.setTexture(m_background_texture);
+        //m_background_sprite.setOrigin(static_cast<float>(x) / 2.0f, static_cast<float>(y) / 2.0f);
     }
 
     auto game::handle_input(bool t_is_pressed) -> void {

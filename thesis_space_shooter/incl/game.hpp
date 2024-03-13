@@ -21,6 +21,8 @@ namespace spsh {
 
         auto render() -> void;
 
+        auto set_background() -> void;
+
         auto handle_input(bool) -> void;
 
         auto move_player(sf::Time) -> void;
@@ -52,7 +54,10 @@ namespace spsh {
         sf::Clock m_global_clock; //TODO better name?
 
         sf::RenderWindow m_window;
+        sf::Sprite m_background_sprite;
         sf::Texture m_asteroid_texture;
+        sf::Texture m_background_texture;
+
 
         player_ship m_player;
         std::unique_ptr<enemy_ship> m_enemy;

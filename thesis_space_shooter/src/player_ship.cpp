@@ -9,7 +9,7 @@ namespace spsh {
     player_ship::player_ship(direction t_direction, float t_speed, short t_lives,
                              std::queue<projectile> t_bullets, std::size_t t_init_ammo_cnt)
         : ship_base(t_direction, t_speed, t_lives), m_bullets(std::move(t_bullets)) {
-        if (!m_texture.loadFromFile("../media/eagle.png")) {
+        if (!m_texture.loadFromFile("../media/player_ship_one.png")) {
             std::cerr << "error loading player\n";
         }
         set_texture(m_texture);
@@ -38,8 +38,8 @@ namespace spsh {
         auto proj = m_bullets.back();
         m_bullets.pop(); //TODO nicer solution that requires no copy?
         auto pos = this->get_position();
-        pos.x += static_cast<float>(this->get_texture_size().x) / 4.0f; //TODO this is ugly as fuck but it works
-        pos.y -= static_cast<float>(proj.get_texture_size().y);
+        pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f - static_cast<float>(proj.get_texture_size().x)/ 2.0f; //TODO this is ugly as fuck but it works
+        pos.y -= this->get_texture_rect().height;
         proj.set_position(pos);
         return {proj};
     }
