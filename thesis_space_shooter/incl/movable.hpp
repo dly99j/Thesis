@@ -9,6 +9,9 @@ namespace spsh {
         up, up_right, right, down_right, down, down_left, left, up_left, stationary
     };
 
+    //Stores the position and the texture size of the player
+    using player_info = std::pair<sf::Vector2f, sf::FloatRect>;
+
     class movable {
     public:
         explicit movable(direction, float);
@@ -49,7 +52,7 @@ namespace spsh {
         auto is_off_map(const std::unique_ptr<sf::Vector2u>& t_window_size) const -> bool;
 
     private:
-        sf::Sprite m_texture;
+        sf::Sprite m_sprite;
         direction m_direction;
         //TODO this was originally const but remove_if needs assignment operator. fix? or is it good as non const?
         float m_speed;

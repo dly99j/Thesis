@@ -7,9 +7,8 @@
 
 namespace spsh {
     player_ship::player_ship(direction t_direction, float t_speed, short t_lives,
-        std::queue<projectile> t_bullets, std::size_t t_init_ammo_cnt)
+                             std::queue<projectile> t_bullets, std::size_t t_init_ammo_cnt)
         : ship_base(t_direction, t_speed, t_lives), m_bullets(std::move(t_bullets)) {
-
         if (!m_texture.loadFromFile("../media/eagle.png")) {
             std::cerr << "error loading player\n";
         }
@@ -28,9 +27,13 @@ namespace spsh {
         }
     }
 
-    auto player_ship::shoot() -> std::optional<projectile> {
+    auto player_ship::shoot(std::optional<sf::FloatRect> t_nothing) -> std::optional<projectile> {
+        if (t_nothing.has_value()) {
+            std::cerr << "Fatal developer error: player_ship::shoot should never recive a param value\n";
+            exit(3);
+        }
         if (m_bullets.empty()) {
-            return {};
+            return std::nullopt;
         }
         auto proj = m_bullets.back();
         m_bullets.pop(); //TODO nicer solution that requires no copy?

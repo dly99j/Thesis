@@ -4,7 +4,6 @@
 #include "movable.hpp"
 
 namespace spsh {
-
     enum class projectile_type {
         asteroid, rocket
     };

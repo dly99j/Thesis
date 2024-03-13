@@ -27,7 +27,13 @@ namespace spsh {
 
         auto move_projectiles(sf::Time) -> void;
 
+        auto projectile_action(sf::Time) -> void;
+
+        auto enemy_action(sf::Time) -> void;
+
         auto move_enemy(sf::Time) -> void;
+
+        auto send_enemy_projectile() -> void;
 
         auto detect_collision() -> void;
 
@@ -49,7 +55,7 @@ namespace spsh {
         sf::Texture m_asteroid_texture;
 
         player_ship m_player;
-        enemy_ship m_enemy;
+        std::unique_ptr<enemy_ship> m_enemy;
         std::vector<projectile> m_projectiles;
     };
 } // spsh

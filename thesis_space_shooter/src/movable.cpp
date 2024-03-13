@@ -8,7 +8,7 @@
 
 namespace spsh {
     movable::movable(direction t_direction, float t_speed)
-        : m_texture(), m_direction(t_direction), m_speed(t_speed) {
+        : m_sprite(), m_direction(t_direction), m_speed(t_speed) {
     }
 
     movable::~movable() = default;
@@ -29,20 +29,20 @@ namespace spsh {
     }
 
     auto movable::get_position() const -> sf::Vector2f {
-        return m_texture.getPosition();
+        return m_sprite.getPosition();
     }
 
     //TODO we should probably make the rect smaller
     auto movable::get_texture_rect() const -> sf::FloatRect {
-        const auto& [top, left] = get_position();
-        const auto& rect = m_texture.getTextureRect();
+        const auto& [left, top] = get_position();
+        const auto& rect = m_sprite.getTextureRect();
         const auto& width = static_cast<float>(rect.width);
         const auto& height = static_cast<float>(rect.width);
-        return {left - width/4.0f, top - height/4.0f, width/2.0f, height/4.0f*3.0f};
+        return {left - width / 4.0f, top - height / 4.0f, width / 2.0f, height / 4.0f * 3.0f};
     }
 
     auto movable::get_texture_size() const -> sf::Vector2u {
-        return m_texture.getTexture()->getSize();
+        return m_sprite.getTexture()->getSize();
     }
 
     auto movable::set_dierction(direction t_direction) -> void {
@@ -50,15 +50,15 @@ namespace spsh {
     }
 
     auto movable::set_texture(sf::Texture& t_texture) -> void {
-        m_texture.setTexture(t_texture);
+        m_sprite.setTexture(t_texture);
     }
 
     auto movable::set_position(sf::Vector2f t_position) -> void {
-        m_texture.setPosition(t_position);
+        m_sprite.setPosition(t_position);
     }
 
     auto movable::draw(sf::RenderTarget& t_target) -> void {
-        t_target.draw(m_texture);
+        t_target.draw(m_sprite);
     }
 
     auto movable::calculate_move() const -> sf::Vector2f {
@@ -103,7 +103,7 @@ namespace spsh {
     }
 
     auto movable::move(sf::Vector2f t_movement) -> void {
-        m_texture.move(t_movement);
+        m_sprite.move(t_movement);
     }
 
     auto movable::is_off_map(const std::unique_ptr<sf::Vector2u>& t_window_size) const -> bool {

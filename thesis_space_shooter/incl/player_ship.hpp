@@ -11,10 +11,10 @@ namespace spsh {
     class player_ship : public ship_base {
     public:
         //TODO default param is temporary right now, might need fix
-        explicit player_ship(direction, float, short = 3, std::queue<projectile> = {}, std::size_t = 10);
+        explicit player_ship(direction, float, short = 3, std::queue<projectile>  = {}, std::size_t = 10);
 
         [[nodiscard]]
-        auto shoot() -> std::optional<projectile> override;
+        auto shoot(std::optional<sf::FloatRect>) -> std::optional<projectile> override;
 
         [[nodiscard]]
         auto get_lifecounter_text() -> sf::Text;
