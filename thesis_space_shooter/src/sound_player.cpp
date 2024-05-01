@@ -13,8 +13,8 @@ namespace spsh {
             return;
         }
 
-        m_sounds[t_sound].second->play();
-        std::clog << m_sounds[t_sound].second->getStatus() << " play() \n";
+        m_sounds[t_sound].second.play();
+        std::clog << m_sounds[t_sound].second.getStatus() << " play() \n";
     }
 
     auto sound_player::loader(const sound_effect t_sound) -> void {
@@ -49,7 +49,7 @@ namespace spsh {
             exit(errors::SOUND_ERROR);
         }
         sf::Sound sound;
-        m_sounds[t_sound] = std::make_pair(std::make_unique<sf::SoundBuffer>(sound_buf), std::make_unique<sf::Sound>(sound));
-        m_sounds[t_sound].second->setBuffer(*m_sounds[t_sound].first);
+        m_sounds[t_sound] = std::make_pair(sound_buf, sound);
+        m_sounds[t_sound].second.setBuffer(m_sounds[t_sound].first);
     }
 } // spsh

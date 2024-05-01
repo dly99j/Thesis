@@ -4,7 +4,8 @@ namespace spsh {
     playing_state::playing_state(sf::RenderWindow &t_window, map t_map)
         : m_map(t_map), m_time_of_last_asteroid(sf::Time::Zero),
           m_window(t_window),
-          m_sound_player({sound_effect::player_hit, sound_effect::enemy_hit, sound_effect::button, sound_effect::powerup}){
+          m_sound_player({sound_effect::player_rocket, sound_effect::player_hit, sound_effect::enemy_rocket,
+              sound_effect::enemy_hit, sound_effect::button, sound_effect::powerup}){
         m_music_player.play();
         set_map();
 
@@ -332,7 +333,8 @@ namespace spsh {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             auto &&proj = m_player->shoot(std::nullopt);
             if (proj.has_value()) {
-                m_projectiles.push_back(proj.value());
+                m_projectiles.push_back(std::move(proj.value()));
+                m_sound_player.play(sound_effect::player_rocket);
             }
         }
     }
@@ -403,10 +405,11 @@ namespace spsh {
     }
 
     auto playing_state::send_enemy_projectile() -> void {
-        if (const auto proj =
+        if (auto&& proj =
                     m_enemy->send_projectile_if_needed(m_player->get_reduced_texture_rect());
             proj.has_value()) {
-            m_projectiles.push_back(proj.value());
+            m_projectiles.push_back(std::move(proj.value()));
+            m_sound_player.play(sound_effect::enemy_rocket);
         }
     }
 

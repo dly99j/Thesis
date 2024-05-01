@@ -14,13 +14,8 @@ namespace spsh {
         [[nodiscard]]
         auto get_type() const -> projectile_type;
 
-        auto set_sound() -> void;
-
-        auto play_sound() -> void;
-
     protected:
         projectile_type m_type;
-        sound_player m_sound_player;
     };
 } // spsh
 

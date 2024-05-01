@@ -25,7 +25,7 @@ private:
     auto load_effect(sound_effect, const std::string&) -> void;
 
 private:
-    std::map<sound_effect, std::pair<std::unique_ptr<sf::SoundBuffer>, std::unique_ptr<sf::Sound>>> m_sounds;
+    std::map<sound_effect, std::pair<sf::SoundBuffer, sf::Sound>> m_sounds;
 };
 
 } // spsh
