@@ -34,6 +34,7 @@ private:
 template<music type>
 music_player<type>::music_player() {
     load();
+    m_music.setVolume(constants::music_volume);
 }
 
 template<music type>

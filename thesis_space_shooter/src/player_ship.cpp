@@ -69,7 +69,7 @@ namespace spsh {
         pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f - static_cast<float>(proj.get_texture_size().x)/ 2.0f; //TODO this is ugly as fuck but it works
         pos.y -= this->get_reduced_texture_rect().height;
         proj.set_position(pos);
-        return {proj};
+        return {std::move(proj)};
     }
 
     auto player_ship::add_ammo(short t_amount) -> void {

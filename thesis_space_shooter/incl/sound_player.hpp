@@ -13,6 +13,8 @@ namespace spsh {
 
 class sound_player {
 public:
+    sound_player() = default;
+
     explicit sound_player(std::initializer_list<sound_effect>);
 
     auto play(sound_effect) -> void;
@@ -20,7 +22,7 @@ public:
 private:
     auto loader(sound_effect) -> void;
 
-    auto load(sound_effect, const std::string&) -> void;
+    auto load_effect(sound_effect, const std::string&) -> void;
 
 private:
     std::map<sound_effect, std::pair<std::unique_ptr<sf::SoundBuffer>, std::unique_ptr<sf::Sound>>> m_sounds;

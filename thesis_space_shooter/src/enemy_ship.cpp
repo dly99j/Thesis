@@ -8,6 +8,7 @@ namespace spsh {
         : ship_base(t_direction, t_speed, t_lives), m_time_since_alive(sf::Time::Zero),
         m_gen(m_rd()), m_dist(0, 10) {
 
+
         if (!m_bullet_texture.loadFromFile("../media/enemy_missile.png")) {
             std::cerr << "error loading bullet\n";
             exit(errors::ASSET_LOAD_ERROR);
@@ -32,7 +33,7 @@ namespace spsh {
                 - static_cast<float>(proj.get_texture_size().x)/ 2.0f;
         pos.y += this->get_reduced_texture_rect().height;
         proj.set_position(pos);
-        return {proj};
+        return {std::move(proj)};
     }
 
     auto enemy_ship::send_projectile_if_needed(sf::FloatRect t_player_rect)

@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "movable.hpp"
 #include "enums.hpp"
+#include "sound_player.hpp"
 
 namespace spsh {
 
@@ -13,9 +14,13 @@ namespace spsh {
         [[nodiscard]]
         auto get_type() const -> projectile_type;
 
+        auto set_sound() -> void;
+
+        auto play_sound() -> void;
+
     protected:
-        static sf::Texture m_projectile_texture;
         projectile_type m_type;
+        sound_player m_sound_player;
     };
 } // spsh
 

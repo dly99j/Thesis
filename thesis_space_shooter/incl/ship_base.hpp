@@ -2,6 +2,7 @@
 #define SHIP_BASE_HPP
 #include "movable.hpp"
 #include "projectile.hpp"
+#include "sound_player.hpp"
 
 namespace spsh {
     class ship_base : public movable {

@@ -49,8 +49,8 @@ namespace spsh {
     };
 
     enum class sound_effect {
-        player_fire,
-        enemy_fire,
+        player_rocket,
+        enemy_rocket,
         player_hit,
         enemy_hit,
         button,

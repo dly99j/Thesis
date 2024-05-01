@@ -22,6 +22,7 @@ namespace spsh {
 
         constexpr auto pwu_spawn_interval = 2.0f;
         constexpr auto change_direction_interval = 3.0f;
+        constexpr auto music_volume = 30.0f;
     }
 
     namespace errors {

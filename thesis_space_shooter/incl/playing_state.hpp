@@ -18,6 +18,7 @@
 #include "waypoint_enemy.hpp"
 #include "enums.hpp"
 #include "music_player.hpp"
+#include "sound_player.hpp"
 
 using namespace std::chrono_literals;
 
@@ -106,7 +107,8 @@ namespace spsh {
     std::vector<projectile> m_projectiles;
     std::vector<powerup> m_powerups;
 
-    music_player<music::game> m_music;
+    music_player<music::game> m_music_player;
+    sound_player m_sound_player;
   };
 } // namespace spsh
 

@@ -16,6 +16,9 @@ namespace spsh {
 
     private:
         sf::RenderWindow m_window;
+
+        music_player<music::menu> m_music_player;
+        sound_player m_sound_player;
     };
 } // namespace spsh
 

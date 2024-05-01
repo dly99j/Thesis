@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(thesis_space_shooter)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
 
 find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 #find_package(Clang 19 REQUIRED CONFIG)

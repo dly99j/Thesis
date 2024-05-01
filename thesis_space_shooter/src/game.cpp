@@ -1,14 +1,10 @@
 #include "../incl/game.hpp"
-#include "../incl/sound_player.hpp"
 
 namespace spsh {
-    game::game() : m_window(sf::VideoMode(1280, 960), "SpaceShooter", sf::Style::Close) {}
+    game::game() : m_window(sf::VideoMode(1280, 960), "SpaceShooter", sf::Style::Close),
+                   m_sound_player({sound_effect::button}){}
     auto game::run() -> void {
-        spsh::sound_player s{spsh::sound_effect::enemy_hit};
-        s.play(spsh::sound_effect::enemy_hit);
-        s.play(spsh::sound_effect::enemy_fire);
-        music_player<music::menu> mp;
-        //mp.play();
+        m_music_player.play();
         auto curr_map = map::first;
         while (m_window.isOpen()) {
             sf::Event event{};
@@ -19,18 +15,24 @@ namespace spsh {
 
                 main_menu mm(m_window);
                 const auto result = mm.display();
+                m_sound_player.play(sound_effect::button);
 
                 switch (result) {
                     case menu_result::play: {
-                        mp.stop();
+                        m_music_player.stop();
                         playing_state ps(m_window, curr_map);
                         ps.run();
-                        mp.play();
+                        //Has to be played here because the playing state instance ceases to exist
+                        m_sound_player.play(sound_effect::button);
+                        m_music_player.play();
                         break;
                     }
                     case menu_result::choose_map: {
                         choose_map_state cms(m_window);
-                        curr_map = cms.display().value_or(curr_map);
+                        if (auto opt_map = cms.display(); opt_map.has_value()) {
+                            m_sound_player.play(sound_effect::button);
+                            curr_map = opt_map.value();
+                        }
                         break;
                     }
                     case menu_result::quit:

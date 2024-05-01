@@ -3,8 +3,9 @@
 namespace spsh {
     playing_state::playing_state(sf::RenderWindow &t_window, map t_map)
         : m_map(t_map), m_time_of_last_asteroid(sf::Time::Zero),
-          m_window(t_window) {
-        m_music.play();
+          m_window(t_window),
+          m_sound_player({sound_effect::player_hit, sound_effect::enemy_hit, sound_effect::button, sound_effect::powerup}){
+        m_music_player.play();
         set_map();
 
         if (!m_font.loadFromFile("../media/sansation.ttf")) {
@@ -41,12 +42,12 @@ namespace spsh {
             auto delta_time = clock.restart();
             time_since_update += delta_time;
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-                m_music.pause();
+                m_music_player.pause();
                 auto quit = pause_game();
                 if (quit) {
                     return;
                 }
-                m_music.play();
+                m_music_player.play();
                 clock.restart();
             }
             while (time_since_update > c_frame_time) {
@@ -118,6 +119,7 @@ namespace spsh {
     }
 
     auto playing_state::pause_game() -> bool {
+        m_sound_player.play(sound_effect::button);
         m_player->set_dierction(direction::stationary);
         auto [resume_button, quit_button] = draw_pause_game();
         while (m_window.isOpen()) {
@@ -126,6 +128,7 @@ namespace spsh {
                 if (resume_button.getGlobalBounds().contains(mouse_pos)) {
                     sf::Event e{};
                     while (m_window.pollEvent(e)) {}
+                    m_sound_player.play(sound_effect::button);
                     return false;
                 }
                 if (quit_button.getGlobalBounds().contains(mouse_pos)) {
@@ -139,7 +142,6 @@ namespace spsh {
     }
 
     auto playing_state::draw_pause_game() -> std::pair<sf::RectangleShape, sf::RectangleShape> {
-        //m_window.clear(sf::Color(0, 0, 0, 150));
         sf::Text pause_text;
         pause_text.setFillColor(sf::Color::White);
         pause_text.setCharacterSize(60);
@@ -218,10 +220,7 @@ namespace spsh {
             default:
                 std::unreachable();
         }
-        // auto [x, y] = m_background_texture.getSize();
         m_background_sprite.setTexture(m_background_texture);
-        // m_background_sprite.setOrigin(static_cast<float>(x) / 2.0f,
-        // static_cast<float>(y) / 2.0f);
     }
 
     auto playing_state::load_map_elements() -> void {
@@ -376,6 +375,7 @@ namespace spsh {
         send_enemy_projectile();
     }
 
+    //TODO also partially refactor?
     auto playing_state::move_enemy(sf::Time t_delta_time) -> void {
 
         switch (m_map) {
@@ -417,12 +417,13 @@ namespace spsh {
             if (m_player->get_reduced_texture_rect().intersects(proj.get_reduced_texture_rect())) {
                 collided_proj.push_back(proj);
                 m_player->decrease_life();
+                m_sound_player.play(sound_effect::player_hit);
             }
-            // TODO increase enemy texture rect
             else if (m_enemy->get_reduced_texture_rect().intersects(proj.get_texture_rect()) &&
                      proj.get_type() == projectile_type::rocket) {
                 collided_proj.push_back(proj);
                 m_enemy->decrease_life();
+                m_sound_player.play(sound_effect::enemy_hit);
             }
         }
         for (auto &pwu: m_powerups) {
@@ -430,12 +431,8 @@ namespace spsh {
             if (m_player->get_texture_rect().intersects(pwu.get_reduced_texture_rect())) {
                 collided_pwu.push_back(pwu);
                 pwu.apply_effect(m_player);
+                m_sound_player.play(sound_effect::powerup);
             }
-            //TODO powerups apply for enemy or no??
-            //else if (m_enemy->get_texture_rect().intersects(pwu.get_reduced_texture_rect())) {
-            //    collided_proj.push_back(proj);
-            //    m_enemy->decrease_life();
-            //}
         }
         if (!collided_proj.empty() || !collided_pwu.empty()) {
             handle_collision(collided_proj, collided_pwu);
@@ -579,7 +576,6 @@ namespace spsh {
         }
     }
 
-    //TODO this is not this class' responsibility. Refactor
     auto playing_state::generate_random_coords(const sf::Vector2u t_size) const
         -> sf::Vector2f {
         std::random_device random_device;

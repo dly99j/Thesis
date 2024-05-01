@@ -14,7 +14,7 @@ namespace spsh {
     protected:
         auto generate_new_waypoint(sf::Vector2u) -> void;
 
-        auto const is_close_to_waypoint() const -> bool;
+        auto is_close_to_waypoint() const -> bool;
 
     private:
         sf::Vector2f m_waypoint;

@@ -54,7 +54,7 @@ namespace spsh {
     protected:
         //auto virtual load_resources() -> void = 0;
 
-    private:
+    protected:
         sf::Sprite m_sprite;
         direction m_direction;
         float m_speed;
