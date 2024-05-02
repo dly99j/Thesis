@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #include "enums.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 
 namespace spsh {
 

@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "enums.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 #include <SFML/Audio.hpp>
 
 

@@ -6,7 +6,7 @@
 
 #include "projectile.hpp"
 #include "ship_base.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 
 namespace spsh {
 

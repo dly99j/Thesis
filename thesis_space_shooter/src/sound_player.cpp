@@ -1,5 +1,7 @@
 #include "../incl/sound_player.hpp"
 
+#include <thread>
+
 namespace spsh {
     sound_player::sound_player(const std::initializer_list<sound_effect> t_sounds) {
         for (const auto sound : t_sounds) {
@@ -14,7 +16,6 @@ namespace spsh {
         }
 
         m_sounds[t_sound].second.play();
-        std::clog << m_sounds[t_sound].second.getStatus() << " play() \n";
     }
 
     auto sound_player::loader(const sound_effect t_sound) -> void {

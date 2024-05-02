@@ -10,8 +10,8 @@ const char* comp = "Unknown";
 #endif
 
 int main() {
-  std::cout << "#define __cplusplus: " << __cplusplus << std::endl;
-  std::cout << comp << std::endl;
+  //std::cout << "#define __cplusplus: " << __cplusplus << std::endl;
+  //std::cout << comp << std::endl;
   spsh::game gme;
   gme.run();
 }

@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "enums.hpp"
 #include "menu_base.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 
 namespace spsh {
     class choose_map_state : public menu_base {

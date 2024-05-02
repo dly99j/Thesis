@@ -17,7 +17,7 @@ namespace spsh {
         m_enemy_clock.restart();
     }
 
-    auto enemy_ship::shoot(std::optional<sf::FloatRect> t_player_info) -> std::optional<projectile> {
+    auto enemy_ship::shoot(const std::optional<sf::FloatRect> t_player_info) -> std::optional<projectile> {
         if (!t_player_info.has_value()) {
             std::cerr <<
                     "Possible developer error: enemy_ship::shoot param should have a value (might change in the future)\n";

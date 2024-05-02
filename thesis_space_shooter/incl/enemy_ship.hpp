@@ -3,7 +3,7 @@
 #include <random>
 
 #include "ship_base.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 
 namespace spsh {
     class enemy_ship : public ship_base {

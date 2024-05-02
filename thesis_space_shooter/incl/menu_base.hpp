@@ -6,7 +6,7 @@
 #define MENU_BASE_HPP
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "constants.hpp"
+#include "config.hpp"
 
 namespace spsh {
 

@@ -2,7 +2,7 @@
 #define CHASING_ENEMY_HPP
 
 #include "enemy_ship.hpp"
-#include "constants.hpp"
+#include "config.hpp"
 #include <iostream>
 
 namespace spsh {

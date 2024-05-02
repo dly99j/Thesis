@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 #include <cstddef>
 #include "enums.hpp"
 
@@ -32,4 +32,4 @@ namespace spsh {
         constexpr int SOUND_ERROR = 4;
     }
 } //SPSH
-#endif //CONSTANTS_HPP
+#endif //CONFIG_HPP

@@ -32,7 +32,7 @@ add_executable(thesis_space_shooter
         incl/powerup.hpp
         src/game.cpp
         incl/game.hpp
-        incl/constants.hpp
+        incl/config.hpp
         src/waypoint_enemy.cpp
         incl/waypoint_enemy.hpp
         src/main_menu.cpp
