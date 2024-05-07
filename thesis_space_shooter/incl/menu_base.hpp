@@ -1,7 +1,3 @@
-//
-// Created by htamas on 2024.04.27..
-//
-
 #ifndef MENU_BASE_HPP
 #define MENU_BASE_HPP
 #include <SFML/Graphics.hpp>

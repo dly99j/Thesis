@@ -14,7 +14,7 @@ namespace spsh {
     public:
         explicit powerup(powerup_type t_type);
 
-        auto apply_effect(std::unique_ptr<player_ship> &) const -> void;
+        auto apply_effect(const std::unique_ptr<player_ship> &) const -> void;
 
         auto static generate_powerup(sf::Vector2f, sf::Clock &,
                                      std::map<powerup_type, sf::Texture> &) -> std::optional<powerup>;

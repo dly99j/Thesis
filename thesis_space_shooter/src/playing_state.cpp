@@ -1,11 +1,15 @@
 #include "../incl/playing_state.hpp"
 
 namespace spsh {
-    playing_state::playing_state(sf::RenderWindow &t_window, map t_map)
-        : m_map(t_map), m_time_of_last_asteroid(sf::Time::Zero),
+    playing_state::playing_state(sf::RenderWindow &t_window, const map t_map)
+        : m_map(t_map),
+          m_time_of_last_asteroid(sf::Time::Zero),
           m_window(t_window),
-          m_sound_player({sound_effect::player_rocket, sound_effect::player_hit, sound_effect::enemy_rocket,
-              sound_effect::enemy_hit, sound_effect::button, sound_effect::powerup}){
+          m_sound_player({
+              sound_effect::player_rocket, sound_effect::player_hit,
+              sound_effect::enemy_rocket, sound_effect::enemy_hit,
+              sound_effect::button, sound_effect::powerup
+          }) {
         m_music_player.play();
         set_map();
 
@@ -20,10 +24,10 @@ namespace spsh {
         m_asteroid_clock.restart();
         m_powerup_clock.restart();
 
-        auto window_width = static_cast<float>(m_window.getSize().x);
-        auto window_height = static_cast<float>(m_window.getSize().y);
-        auto player_width = m_player->get_reduced_texture_rect().width;
-        auto enemy_width = m_enemy->get_reduced_texture_rect().width;
+        const auto window_width = static_cast<float>(m_window.getSize().x);
+        const auto window_height = static_cast<float>(m_window.getSize().y);
+        const auto player_width = m_player->get_reduced_texture_rect().width;
+        const auto enemy_width = m_enemy->get_reduced_texture_rect().width;
         // auto player_height =
         // static_cast<float>(m_player.get_reduced_texture_rect().height);
         // TODO center correctly
@@ -40,11 +44,11 @@ namespace spsh {
         auto time_since_update = sf::Time::Zero;
 
         while (m_window.isOpen()) {
-            auto delta_time = clock.restart();
+            const auto delta_time = clock.restart();
             time_since_update += delta_time;
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 m_music_player.pause();
-                auto quit = pause_game();
+                const auto quit = pause_game();
                 if (quit) {
                     return;
                 }
@@ -67,15 +71,18 @@ namespace spsh {
     auto playing_state::set_map() -> void {
         switch (m_map) {
             case map::first:
-                m_player = std::make_unique<player_ship>(direction::stationary, constants::firts_ship);
+                m_player = std::make_unique<player_ship>(direction::stationary,
+                                                         constants::firts_ship);
                 m_enemy = std::make_unique<waypoint_enemy>(direction::stationary);
                 break;
             case map::second:
-                m_player = std::make_unique<player_ship>(direction::stationary, constants::second_ship);
+                m_player = std::make_unique<player_ship>(direction::stationary,
+                                                         constants::second_ship);
                 m_enemy = std::make_unique<chasing_enemy>(direction::stationary);
                 break;
             case map::third:
-                m_player = std::make_unique<player_ship>(direction::stationary, constants::third_ship);
+                m_player = std::make_unique<player_ship>(direction::stationary,
+                                                         constants::third_ship);
                 m_enemy = std::make_unique<avoiding_enemy>(direction::stationary);
                 break;
             default:
@@ -96,7 +103,7 @@ namespace spsh {
         }
     }
 
-    auto playing_state::update(sf::Time t_delta_time) -> void {
+    auto playing_state::update(const sf::Time t_delta_time) -> void {
         move_player(t_delta_time);
         projectile_action(t_delta_time);
         powerup_action();
@@ -124,17 +131,20 @@ namespace spsh {
         m_player->set_dierction(direction::stationary);
         auto [resume_button, quit_button] = draw_pause_game();
         while (m_window.isOpen()) {
+            //TODO event closed
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
                 if (resume_button.getGlobalBounds().contains(mouse_pos)) {
                     sf::Event e{};
-                    while (m_window.pollEvent(e)) {}
+                    while (m_window.pollEvent(e)) {
+                    }
                     m_sound_player.play(sound_effect::button);
                     return false;
                 }
                 if (quit_button.getGlobalBounds().contains(mouse_pos)) {
                     sf::Event e{};
-                    while (m_window.pollEvent(e)) {}
+                    while (m_window.pollEvent(e)) {
+                    }
                     return true;
                 }
             }
@@ -142,14 +152,17 @@ namespace spsh {
         return true;
     }
 
-    auto playing_state::draw_pause_game() -> std::pair<sf::RectangleShape, sf::RectangleShape> {
+    auto playing_state::draw_pause_game()
+        -> std::pair<sf::RectangleShape, sf::RectangleShape> {
         sf::Text pause_text;
         pause_text.setFillColor(sf::Color::White);
         pause_text.setCharacterSize(60);
         pause_text.setString("Game paused");
         pause_text.setFont(m_font);
         sf::Vector2f pos;
-        pos.x = (static_cast<float>(m_window.getSize().x) - pause_text.getLocalBounds().width) / 2.0f;
+        pos.x = (static_cast<float>(m_window.getSize().x) -
+                 pause_text.getLocalBounds().width) /
+                2.0f;
         pos.y = static_cast<float>(m_window.getSize().y) / 3.0f;
         pause_text.setPosition(pos);
 
@@ -169,20 +182,24 @@ namespace spsh {
 
         auto button_width = resume_button.getSize().x;
         auto button_height = resume_button.getSize().y;
-        auto button_x = (static_cast<float>(m_window.getSize().x) - button_width) / 2.f;
+        auto button_x =
+                (static_cast<float>(m_window.getSize().x) - button_width) / 2.f;
         auto button_y = pos.y + 100.f;
 
         resume_button.setPosition(button_x, button_y);
         quit_button.setPosition(button_x, button_y + button_height + 30.f);
-        resume_text.setPosition(button_x + (button_width - resume_text.getLocalBounds().width) / 2.f,
-                                button_y + (button_height - resume_text.getLocalBounds().height) / 2.f - 5.f);
-        quit_text.setPosition(button_x + (button_width - quit_text.getLocalBounds().width) / 2.f,
-                              button_y + button_height + 30.f +
-                              (button_height - quit_text.getLocalBounds().height) / 2.f - 5.f);
-
+        resume_text.setPosition(
+            button_x + (button_width - resume_text.getLocalBounds().width) / 2.f,
+            button_y + (button_height - resume_text.getLocalBounds().height) / 2.f -
+            5.f);
+        quit_text.setPosition(
+            button_x + (button_width - quit_text.getLocalBounds().width) / 2.f,
+            button_y + button_height + 30.f +
+            (button_height - quit_text.getLocalBounds().height) / 2.f - 5.f);
 
         //m_window.clear(sf::Color(30, 30, 30, 150)); // Semi-transparent black background
-        sf::RectangleShape pause_overlay(static_cast<sf::Vector2f>(m_window.getSize()));
+        sf::RectangleShape pause_overlay(
+            static_cast<sf::Vector2f>(m_window.getSize()));
         pause_overlay.setFillColor(sf::Color(0, 0, 0, 128));
         m_window.draw(pause_overlay);
         m_window.draw(pause_text);
@@ -257,13 +274,13 @@ namespace spsh {
         }
     }
 
-    auto playing_state::handle_input(bool t_is_pressed) -> void {
+    auto playing_state::handle_input(const bool t_is_pressed) -> void {
         if (!t_is_pressed) {
             m_player->set_dierction(direction::stationary);
         }
 
         std::vector<direction> directions;
-        direction final_direction = direction::stationary;
+        auto final_direction = direction::stationary;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             directions.push_back(direction::up);
@@ -278,7 +295,7 @@ namespace spsh {
             directions.push_back(direction::right);
         }
 
-        const auto is_in_vec = [&directions](direction d) {
+        const auto is_in_vec = [&directions](const direction d) {
             return std::ranges::find(directions, d) != directions.end();
         };
 
@@ -331,8 +348,7 @@ namespace spsh {
         m_player->set_dierction(final_direction);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            auto &&proj = m_player->shoot(std::nullopt);
-            if (proj.has_value()) {
+            if (auto &&proj = m_player->shoot(std::nullopt); proj.has_value()) {
                 m_projectiles.push_back(std::move(proj.value()));
                 m_sound_player.play(sound_effect::player_rocket);
             }
@@ -340,10 +356,11 @@ namespace spsh {
     }
 
     // TODO refactor to ship_base/player_ship
-    auto playing_state::move_player(sf::Time t_delta_time) -> void {
-        auto movement = m_player->calculate_move();
+    auto playing_state::move_player(const sf::Time t_delta_time) -> void {
+        const auto movement = m_player->calculate_move();
 
-        if (m_player->is_off_map(std::make_unique<sf::Vector2u>(m_window.getSize()))) {
+        if (m_player->is_off_map(
+            std::make_unique<sf::Vector2u>(m_window.getSize()))) {
             m_player->put_back_on_map(
                 std::make_unique<sf::Vector2u>(m_window.getSize()));
             return;
@@ -351,7 +368,7 @@ namespace spsh {
         m_player->move(movement * t_delta_time.asSeconds());
     }
 
-    auto playing_state::move_projectiles(sf::Time t_delta_time) -> void {
+    auto playing_state::move_projectiles(const sf::Time t_delta_time) -> void {
         for (auto &&i: m_projectiles) {
             auto movement = i.calculate_move();
             i.move(movement * t_delta_time.asSeconds());
@@ -362,7 +379,7 @@ namespace spsh {
                       });
     }
 
-    auto playing_state::projectile_action(sf::Time t_delta_time) -> void {
+    auto playing_state::projectile_action(const sf::Time t_delta_time) -> void {
         move_projectiles(t_delta_time);
         send_asteroid_if_needed();
     }
@@ -372,23 +389,24 @@ namespace spsh {
         m_player->handle_speed_boost();
     }
 
-    auto playing_state::enemy_action(sf::Time t_delta_time) -> void {
+    auto playing_state::enemy_action(const sf::Time t_delta_time) -> void {
         move_enemy(t_delta_time);
         send_enemy_projectile();
     }
 
     //TODO also partially refactor?
     auto playing_state::move_enemy(sf::Time t_delta_time) -> void {
-
         switch (m_map) {
             case map::first:
                 m_enemy->calculate_direction(m_window.getSize(), std::nullopt);
                 break;
             case map::second:
-                m_enemy->calculate_direction(m_window.getSize(), { m_player->get_texture_rect() });
+                m_enemy->calculate_direction(m_window.getSize(),
+                                             {m_player->get_texture_rect()});
                 break;
             case map::third:
-                m_enemy->calculate_direction(m_window.getSize(), get_closest_bullet_to_enemy());
+                m_enemy->calculate_direction(m_window.getSize(),
+                                             get_closest_bullet_to_enemy());
                 break;
             default:
                 std::unreachable();
@@ -405,8 +423,8 @@ namespace spsh {
     }
 
     auto playing_state::send_enemy_projectile() -> void {
-        if (auto&& proj =
-                    m_enemy->send_projectile_if_needed(m_player->get_reduced_texture_rect());
+        if (auto &&proj = m_enemy->send_projectile_if_needed(
+                m_player->get_reduced_texture_rect());
             proj.has_value()) {
             m_projectiles.push_back(std::move(proj.value()));
             m_sound_player.play(sound_effect::enemy_rocket);
@@ -417,13 +435,14 @@ namespace spsh {
         std::vector<projectile> collided_proj;
         std::vector<powerup> collided_pwu;
         for (auto &proj: m_projectiles) {
-            if (m_player->get_reduced_texture_rect().intersects(proj.get_reduced_texture_rect())) {
+            if (m_player->get_reduced_texture_rect().intersects(
+                proj.get_reduced_texture_rect())) {
                 collided_proj.push_back(proj);
                 m_player->decrease_life();
                 m_sound_player.play(sound_effect::player_hit);
-            }
-            else if (m_enemy->get_reduced_texture_rect().intersects(proj.get_texture_rect()) &&
-                     proj.get_type() == projectile_type::rocket) {
+            } else if (m_enemy->get_reduced_texture_rect().intersects(
+                           proj.get_texture_rect()) &&
+                       proj.get_type() == projectile_type::rocket) {
                 collided_proj.push_back(proj);
                 m_enemy->decrease_life();
                 m_sound_player.play(sound_effect::enemy_hit);
@@ -431,7 +450,8 @@ namespace spsh {
         }
         for (auto &pwu: m_powerups) {
             //TODO which tecture rect
-            if (m_player->get_texture_rect().intersects(pwu.get_reduced_texture_rect())) {
+            if (m_player->get_texture_rect().intersects(
+                pwu.get_reduced_texture_rect())) {
                 collided_pwu.push_back(pwu);
                 pwu.apply_effect(m_player);
                 m_sound_player.play(sound_effect::powerup);
@@ -442,7 +462,9 @@ namespace spsh {
         }
     }
 
-    auto playing_state::handle_collision(std::vector<projectile> &t_proj, std::vector<powerup> &t_pwu) -> void {
+    auto playing_state::handle_collision(std::vector<projectile> &t_proj,
+                                         std::vector<powerup> &t_pwu) -> void {
+        //TODO ranges
         std::erase_if(m_projectiles, [&t_proj](const projectile &proj) {
             return std::find(t_proj.begin(), t_proj.end(), proj) != t_proj.end();
         });
@@ -451,7 +473,7 @@ namespace spsh {
         });
     }
 
-    auto playing_state::handle_lifetime() -> game_state {
+    auto playing_state::handle_lifetime() const -> game_state {
         if (!m_player->is_alive()) {
             return game_state::lost;
         }
@@ -469,10 +491,11 @@ namespace spsh {
         auto main_menu_button = draw_game_over(state);
         while (m_window.isOpen()) {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
-                if (main_menu_button.getGlobalBounds().contains(mouse_pos)) {
+                if (const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
+                    main_menu_button.getGlobalBounds().contains(mouse_pos)) {
                     sf::Event e{};
-                    while (m_window.pollEvent(e)) {}
+                    while (m_window.pollEvent(e)) {
+                    }
                     return true;
                 }
             }
@@ -495,7 +518,9 @@ namespace spsh {
         }
         game_over_text.setFont(m_font);
         sf::Vector2f pos;
-        pos.x = (static_cast<float>(m_window.getSize().x) - game_over_text.getLocalBounds().width) / 2.0f;
+        pos.x = (static_cast<float>(m_window.getSize().x) -
+                 game_over_text.getLocalBounds().width) /
+                2.0f;
         pos.y = static_cast<float>(m_window.getSize().y) / 3.0f;
         game_over_text.setPosition(pos);
 
@@ -509,14 +534,18 @@ namespace spsh {
 
         auto button_width = main_menu_button.getSize().x;
         auto button_height = main_menu_button.getSize().y;
-        auto button_x = (static_cast<float>(m_window.getSize().x) - button_width) / 2.f;
+        auto button_x =
+                (static_cast<float>(m_window.getSize().x) - button_width) / 2.f;
         auto button_y = pos.y + 100.f;
 
         main_menu_button.setPosition(button_x, button_y);
-        main_menu_text.setPosition(button_x + (button_width - main_menu_text.getLocalBounds().width) / 2.f,
-                                   button_y + (button_height - main_menu_text.getLocalBounds().height) / 2.f - 5.f);
+        main_menu_text.setPosition(
+            button_x + (button_width - main_menu_text.getLocalBounds().width) / 2.f,
+            button_y +
+            (button_height - main_menu_text.getLocalBounds().height) / 2.f - 5.f);
 
-        sf::RectangleShape game_over_overlay(static_cast<sf::Vector2f>(m_window.getSize()));
+        sf::RectangleShape game_over_overlay(
+            static_cast<sf::Vector2f>(m_window.getSize()));
         game_over_overlay.setFillColor(sf::Color(0, 0, 0, 128));
         m_window.draw(game_over_overlay);
         m_window.draw(game_over_text);
@@ -527,16 +556,17 @@ namespace spsh {
         return main_menu_button;
     }
 
-    auto playing_state::get_closest_bullet_to_enemy() -> std::optional<sf::FloatRect> {
-        auto distance_sq = [this](const projectile& p) {
-            return std::pow(this->m_enemy->get_position().x - p.get_position().x, 2)
-                   + std::pow(this->m_enemy->get_position().y - p.get_position().y, 2);
+    auto playing_state::get_closest_bullet_to_enemy()
+        -> std::optional<sf::FloatRect> {
+        auto distance_sq = [this](const projectile &p) {
+            return std::pow(this->m_enemy->get_position().x - p.get_position().x, 2) +
+                   std::pow(this->m_enemy->get_position().y - p.get_position().y, 2);
         };
         if (m_projectiles.empty()) {
             return std::nullopt;
         }
         std::optional<projectile> closest = std::nullopt;
-        for (const auto& i : m_projectiles) {
+        for (const auto &i: m_projectiles) {
             if (i.get_type() == projectile_type::asteroid) {
                 continue;
             }
@@ -570,11 +600,13 @@ namespace spsh {
     }
 
     auto playing_state::spawn_powerup_if_needed() -> void {
-        if (m_powerups.size() > 5) return;
-        if (const auto pwu
-                = powerup::generate_powerup(
-                    generate_random_coords(m_powerup_textures[powerup_type::temporary_speed].getSize()),
-                    m_powerup_clock, m_powerup_textures); pwu.has_value()) {
+        if (m_powerups.size() > 5)
+            return;
+        if (const auto pwu = powerup::generate_powerup(
+                generate_random_coords(
+                    m_powerup_textures[powerup_type::temporary_speed].getSize()),
+                m_powerup_clock, m_powerup_textures);
+            pwu.has_value()) {
             m_powerups.push_back(pwu.value());
         }
     }

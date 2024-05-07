@@ -10,6 +10,8 @@ namespace spsh {
     public:
         explicit enemy_ship(direction, float, short);
 
+        virtual ~enemy_ship() = default;
+
         [[nodiscard]]
         auto shoot(std::optional<sf::FloatRect>) -> std::optional<projectile> override;
 

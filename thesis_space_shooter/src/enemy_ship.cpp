@@ -4,11 +4,9 @@
 #include <iostream>
 
 namespace spsh {
-    enemy_ship::enemy_ship(direction t_direction, float t_speed, short t_lives)
+    enemy_ship::enemy_ship(const direction t_direction, const float t_speed, const short t_lives)
         : ship_base(t_direction, t_speed, t_lives), m_time_since_alive(sf::Time::Zero),
-        m_gen(m_rd()), m_dist(0, 10) {
-
-
+          m_gen(m_rd()), m_dist(0, 10) {
         if (!m_bullet_texture.loadFromFile("../media/enemy_missile.png")) {
             std::cerr << "error loading bullet\n";
             exit(errors::ASSET_LOAD_ERROR);
@@ -30,7 +28,7 @@ namespace spsh {
         proj.set_texture(m_bullet_texture);
         auto pos = this->get_position();
         pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f
-                - static_cast<float>(proj.get_texture_size().x)/ 2.0f;
+                - static_cast<float>(proj.get_texture_size().x) / 2.0f;
         pos.y += this->get_reduced_texture_rect().height;
         proj.set_position(pos);
         return {std::move(proj)};
@@ -46,7 +44,7 @@ namespace spsh {
         return shoot(t_player_rect);
     }
 
-    auto enemy_ship::needs_to_shoot(sf::FloatRect t_player_rect) const -> bool {
+    auto enemy_ship::needs_to_shoot(const sf::FloatRect t_player_rect) const -> bool {
         const auto x_distance = std::abs(t_player_rect.left - get_reduced_texture_rect().left);
         const auto behind = t_player_rect.top < get_reduced_texture_rect().top;
         if (x_distance < t_player_rect.width * 3 && !behind) {

@@ -6,11 +6,11 @@
 #include <SFML/Graphics/Texture.hpp>
 
 namespace spsh {
-    player_ship::player_ship(direction t_direction, const player_details& t_player_details)
+    player_ship::player_ship(const direction t_direction, const player_details &t_player_details)
         : ship_base(t_direction, t_player_details.speed, t_player_details.lives),
-        m_is_boost_active(false), m_boosted_speed(t_player_details.boost_multiplier * t_player_details.speed),
-        m_original_speed(t_player_details.speed), m_speed_boost_duration(sf::seconds(t_player_details.boost_duration)){
-
+          m_is_boost_active(false), m_boosted_speed(t_player_details.boost_multiplier * t_player_details.speed),
+          m_original_speed(t_player_details.speed),
+          m_speed_boost_duration(sf::seconds(t_player_details.boost_duration)) {
         switch (t_player_details.current_map) {
             case map::first: {
                 if (!m_texture.loadFromFile("../media/ship0.png")) {
@@ -54,7 +54,7 @@ namespace spsh {
         }
     }
 
-    auto player_ship::shoot(std::optional<sf::FloatRect> t_nothing) -> std::optional<projectile> {
+    auto player_ship::shoot(const std::optional<sf::FloatRect> t_nothing) -> std::optional<projectile> {
         if (t_nothing.has_value()) {
             std::cerr << "Fatal developer error: player_ship::shoot should never recive a param value\n";
             exit(errors::OPTIONAL_ERROR);
@@ -62,17 +62,18 @@ namespace spsh {
         if (m_bullets.empty()) {
             return std::nullopt;
         }
-        auto&& proj = std::move(m_bullets.back());
+        auto &&proj = std::move(m_bullets.back());
         proj.set_texture(m_bullet_texture);
         m_bullets.pop();
         auto pos = this->get_position();
-        pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f - static_cast<float>(proj.get_texture_size().x)/ 2.0f; //TODO this is ugly as fuck but it works
+        pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f - static_cast<float>(proj.get_texture_size().x) /
+                2.0f; //TODO this is ugly as fuck but it works
         pos.y -= this->get_reduced_texture_rect().height;
         proj.set_position(pos);
         return {std::move(proj)};
     }
 
-    auto player_ship::add_ammo(short t_amount) -> void {
+    auto player_ship::add_ammo(const short t_amount) -> void {
         for (short i = 0; i < t_amount; ++i) {
             m_bullets.emplace(direction::up, 2000.0f, projectile_type::rocket);
         }

@@ -1,11 +1,11 @@
 #include "../incl/powerup.hpp"
 
 namespace spsh {
-    powerup::powerup(powerup_type t_type)
+    powerup::powerup(const powerup_type t_type)
         : movable(direction::stationary, 0.0f), m_type(t_type) {
     }
 
-    auto powerup::apply_effect(std::unique_ptr<player_ship>& t_ship) const -> void {
+    auto powerup::apply_effect(const std::unique_ptr<player_ship> &t_ship) const -> void {
         switch (m_type) {
             case powerup_type::health:
                 t_ship->increase_life();
@@ -22,16 +22,17 @@ namespace spsh {
         }
     }
 
-    auto powerup::generate_powerup(sf::Vector2f t_pos, sf::Clock& t_powerup_clock, std::map<powerup_type, sf::Texture>& t_textures)
-    -> std::optional<powerup> {
-        if (std::floor(t_powerup_clock.getElapsedTime().asSeconds()) <= constants::pwu_spawn_interval){
+    auto powerup::generate_powerup(const sf::Vector2f t_pos, sf::Clock &t_powerup_clock,
+                                   std::map<powerup_type, sf::Texture> &t_textures)
+        -> std::optional<powerup> {
+        if (std::floor(t_powerup_clock.getElapsedTime().asSeconds()) <= constants::pwu_spawn_interval) {
             return std::nullopt;
         }
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dist(0, 2);
-        int rand = dist(gen);
-        powerup_type pt{};
+        const auto rand = dist(gen);
+        powerup_type pt;
 
         switch (rand) {
             case 0:
@@ -54,7 +55,7 @@ namespace spsh {
     }
 
     auto powerup::generate_object(const powerup_type m_type, const sf::Vector2f t_pos,
-                                  std::map<powerup_type, sf::Texture>& t_textures) -> powerup {
+                                  std::map<powerup_type, sf::Texture> &t_textures) -> powerup {
         switch (m_type) {
             case powerup_type::health: {
                 auto health = powerup(powerup_type::health); //random generated variety

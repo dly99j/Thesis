@@ -2,7 +2,9 @@
 
 namespace spsh {
     game::game() : m_window(sf::VideoMode(1280, 960), "SpaceShooter", sf::Style::Close),
-                   m_sound_player({sound_effect::button}){}
+                   m_sound_player({sound_effect::button}) {
+    }
+
     auto game::run() -> void {
         m_music_player.play();
         auto curr_map = map::first;

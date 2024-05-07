@@ -15,7 +15,7 @@ class sound_player {
 public:
     sound_player() = default;
 
-    explicit sound_player(std::initializer_list<sound_effect>);
+    sound_player(std::initializer_list<sound_effect>);
 
     auto play(sound_effect) -> void;
 

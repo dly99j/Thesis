@@ -2,7 +2,7 @@
 
 namespace spsh {
     waypoint_enemy::waypoint_enemy(const direction t_direction, const float t_speed, const short t_lives)
-        : enemy_ship(t_direction, t_speed, t_lives) , m_need_new_gen(true){
+        : enemy_ship(t_direction, t_speed, t_lives), m_need_new_gen(true) {
         if (!m_texture.loadFromFile("../media/eship0.png")) {
             std::cerr << "error loading player\n";
             exit(errors::ASSET_LOAD_ERROR);
@@ -27,9 +27,8 @@ namespace spsh {
         constexpr auto dim = half_dim * 2.0f;
         const auto rect_left = m_waypoint.x - half_dim;
         const auto rect_top = m_waypoint.y - half_dim;
-        const sf::FloatRect square(rect_left, rect_top, dim, dim);
 
-        if (square.intersects(get_texture_rect())) {
+        if (const sf::FloatRect square(rect_left, rect_top, dim, dim); square.intersects(get_texture_rect())) {
             return true;
         }
         return false;
@@ -51,10 +50,10 @@ namespace spsh {
             generate_new_waypoint(t_screen_dimensions);
         }
 
-        const auto& position = get_position();
+        const auto &position = get_position();
         const auto width_difference = std::abs(position.x - m_waypoint.x);
-        const auto height_difference =  std::abs(position.y - m_waypoint.y);
-        const auto critical_diff = 2.0f;
+        const auto height_difference = std::abs(position.y - m_waypoint.y);
+        constexpr auto critical_diff = 2.0f;
 
         const auto enemy_to_the_right = [&position, this]() {
             return position.x > m_waypoint.x;
@@ -63,13 +62,13 @@ namespace spsh {
             return position.y > m_waypoint.y;
         };
 
-        if (width_difference > height_difference * critical_diff) {
+        if (width_difference > critical_diff * height_difference) {
             if (enemy_to_the_right()) {
                 set_dierction(direction::left);
             } else {
                 set_dierction(direction::right);
             }
-        } else if (height_difference > width_difference * critical_diff) {
+        } else if (height_difference > critical_diff * width_difference) {
             if (enemy_lower()) {
                 set_dierction(direction::up);
             } else {

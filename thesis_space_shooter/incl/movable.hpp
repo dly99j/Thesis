@@ -3,7 +3,6 @@
 #include <memory>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-//#include "player_ship.hpp"
 #include "enums.hpp"
 
 namespace spsh {
@@ -38,7 +37,7 @@ namespace spsh {
 
         auto set_dierction(direction) -> void;
 
-        auto set_texture(sf::Texture&) -> void;
+        auto set_texture(const sf::Texture&) -> void;
 
         auto set_position(sf::Vector2f) -> void;
 

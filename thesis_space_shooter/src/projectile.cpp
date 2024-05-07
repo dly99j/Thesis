@@ -1,8 +1,7 @@
 #include "../incl/projectile.hpp"
 
 namespace spsh {
-
-    projectile::projectile(direction t_direction, float t_speed, projectile_type t_type)
+    projectile::projectile(const direction t_direction, const float t_speed, const projectile_type t_type)
         : movable(t_direction, t_speed), m_type(t_type) {
     }
 

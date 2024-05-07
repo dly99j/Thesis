@@ -4,7 +4,7 @@
 
 namespace spsh {
     sound_player::sound_player(const std::initializer_list<sound_effect> t_sounds) {
-        for (const auto sound : t_sounds) {
+        for (const auto sound: t_sounds) {
             loader(sound);
         }
     }
@@ -22,7 +22,7 @@ namespace spsh {
         switch (t_sound) {
             case sound_effect::player_rocket:
                 load_effect(t_sound, "../media/audio/player_rocket.wav");
-            break;
+                break;
             case sound_effect::player_hit:
                 load_effect(t_sound, "../media/audio/player_hit.wav");
                 break;
@@ -43,7 +43,7 @@ namespace spsh {
         }
     }
 
-    auto sound_player::load_effect(const sound_effect t_sound, const std::string& t_path) -> void {
+    auto sound_player::load_effect(const sound_effect t_sound, const std::string &t_path) -> void {
         sf::SoundBuffer sound_buf;
         if (!sound_buf.loadFromFile(t_path)) {
             std::cerr << "error: sound_effect couldn't be loaded\n";

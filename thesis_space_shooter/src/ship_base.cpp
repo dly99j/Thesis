@@ -1,11 +1,11 @@
 #include "../incl/ship_base.hpp"
 
 namespace spsh {
-    ship_base::ship_base(direction t_direction, float t_speed, short t_lives)
-    : movable(t_direction, t_speed), m_lives(t_lives){
+    ship_base::ship_base(const direction t_direction, const float t_speed, const short t_lives)
+        : movable(t_direction, t_speed), m_lives(t_lives) {
     }
 
-    auto ship_base::put_back_on_map(const std::unique_ptr<sf::Vector2u>& t_window_size) -> void {
+    auto ship_base::put_back_on_map(const std::unique_ptr<sf::Vector2u> &t_window_size) -> void {
         if (!is_off_map(t_window_size)) {
             return;
         }
@@ -29,11 +29,11 @@ namespace spsh {
         }
     }
 
-    auto ship_base::decrease_life(short t_decrease_by) -> void {
+    auto ship_base::decrease_life(const short t_decrease_by) -> void {
         m_lives -= t_decrease_by;
     }
 
-    auto ship_base::increase_life(short t_increase_by) -> void {
+    auto ship_base::increase_life(const short t_increase_by) -> void {
         m_lives += t_increase_by;
     }
 

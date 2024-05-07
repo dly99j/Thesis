@@ -2,7 +2,9 @@
 
 namespace spsh {
     choose_map_state::choose_map_state(sf::RenderWindow &t_window) : menu_base(t_window)
-        , m_map0_button({320.f, 240.f}), m_map1_button({320.f, 240.f}), m_map2_button({320.f, 240.f}){
+                                                                     , m_map0_button({320.f, 240.f}),
+                                                                     m_map1_button({320.f, 240.f}),
+                                                                     m_map2_button({320.f, 240.f}) {
         load_image();
     }
 
@@ -42,14 +44,15 @@ namespace spsh {
         m_map2_button.setOutlineThickness(5.0f);
 
         m_map0_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map0_button.getSize().x) / 2.f, 180.f);
-        m_map1_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map1_button.getSize().x) / 2.f,440.f);
+        m_map1_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map1_button.getSize().x) / 2.f, 440.f);
         m_map2_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map2_button.getSize().x) / 2.f, 700.f);
 
         sf::Text map0_text("Fisrt Map", font, 30);
         map0_text.setFillColor(sf::Color::White);
         map0_text.setPosition(
             m_map0_button.getPosition().x + (m_map0_button.getSize().x - map0_text.getGlobalBounds().width) / 2.f,
-            m_map0_button.getPosition().y + (m_map0_button.getSize().y - map0_text.getGlobalBounds().height) / 2.f - 5.f);
+            m_map0_button.getPosition().y + (m_map0_button.getSize().y - map0_text.getGlobalBounds().height) / 2.f -
+            5.f);
 
         sf::Text map1_text("Second Map", font, 30);
         map1_text.setFillColor(sf::Color::White);
@@ -63,7 +66,8 @@ namespace spsh {
         map2_text.setFillColor(sf::Color::White);
         map2_text.setPosition(
             m_map2_button.getPosition().x + (m_map2_button.getSize().x - map2_text.getGlobalBounds().width) / 2.f,
-            m_map2_button.getPosition().y + (m_map2_button.getSize().y - map2_text.getGlobalBounds().height) / 2.f - 5.f);
+            m_map2_button.getPosition().y + (m_map2_button.getSize().y - map2_text.getGlobalBounds().height) / 2.f -
+            5.f);
 
         while (m_window.isOpen()) {
             sf::Event event{};

@@ -1,7 +1,7 @@
 #include "../incl/chasing_enemy.hpp"
 
 namespace spsh {
-    chasing_enemy::chasing_enemy(direction t_direction, float t_speed, short t_lives)
+    chasing_enemy::chasing_enemy(const direction t_direction, const float t_speed, const short t_lives)
         : enemy_ship(t_direction, t_speed, t_lives) {
         if (!m_texture.loadFromFile("../media/eship1.png")) {
             std::cerr << "error loading player\n";
@@ -61,7 +61,7 @@ namespace spsh {
                         && pos_top > 5.0f) {
                         set_dierction(direction::up_left);
                     } else if ((get_direction() == direction::down_left || get_direction() == direction::down_right)
-                        && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
+                               && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
                         set_dierction(direction::down_left);
                     } else {
                         set_dierction(direction::left);
@@ -71,7 +71,7 @@ namespace spsh {
                         && pos_top > 5.0f) {
                         set_dierction(direction::up_right);
                     } else if ((get_direction() == direction::down_left || get_direction() == direction::down_right)
-                        && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
+                               && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
                         set_dierction(direction::down_right);
                     } else {
                         set_dierction(direction::right);
