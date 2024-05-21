@@ -55,8 +55,8 @@ namespace spsh {
                 m_music_player.play();
                 clock.restart();
             }
-            while (time_since_update > c_frame_time) {
-                time_since_update -= c_frame_time;
+            while (time_since_update > constants::frame_time) {
+                time_since_update -= constants::frame_time;
                 handle_events();
                 update(delta_time);
             }
@@ -131,7 +131,13 @@ namespace spsh {
         m_player->set_dierction(direction::stationary);
         auto [resume_button, quit_button] = draw_pause_game();
         while (m_window.isOpen()) {
-            //TODO event closed
+            sf::Event e{};
+            while (m_window.pollEvent(e)) {
+                if (e.type == sf::Event::Closed) {
+                    m_window.close();
+                    return true;
+                }
+            }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
                 if (resume_button.getGlobalBounds().contains(mouse_pos)) {
@@ -355,7 +361,6 @@ namespace spsh {
         }
     }
 
-    // TODO refactor to ship_base/player_ship
     auto playing_state::move_player(const sf::Time t_delta_time) -> void {
         const auto movement = m_player->calculate_move();
 
@@ -449,7 +454,6 @@ namespace spsh {
             }
         }
         for (auto &pwu: m_powerups) {
-            //TODO which tecture rect
             if (m_player->get_texture_rect().intersects(
                 pwu.get_reduced_texture_rect())) {
                 collided_pwu.push_back(pwu);
@@ -464,7 +468,6 @@ namespace spsh {
 
     auto playing_state::handle_collision(std::vector<projectile> &t_proj,
                                          std::vector<powerup> &t_pwu) -> void {
-        //TODO ranges
         std::erase_if(m_projectiles, [&t_proj](const projectile &proj) {
             return std::find(t_proj.begin(), t_proj.end(), proj) != t_proj.end();
         });
@@ -490,6 +493,13 @@ namespace spsh {
         }
         auto main_menu_button = draw_game_over(state);
         while (m_window.isOpen()) {
+            sf::Event e{};
+            while (m_window.pollEvent(e)) {
+                if (e.type == sf::Event::Closed) {
+                    m_window.close();
+                    return true;
+                }
+            }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 if (const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
                     main_menu_button.getGlobalBounds().contains(mouse_pos)) {

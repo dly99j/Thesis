@@ -84,7 +84,6 @@ namespace spsh {
 
     private:
         map m_map;
-        const sf::Time c_frame_time = sf::seconds(1.0f / 240.0f);
         sf::Time m_time_of_last_asteroid;
         sf::Clock m_asteroid_clock;
         sf::Clock m_powerup_clock;

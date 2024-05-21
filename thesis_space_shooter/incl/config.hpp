@@ -23,6 +23,7 @@ namespace spsh {
         constexpr auto pwu_spawn_interval = 2.0f;
         constexpr auto change_direction_interval = 3.0f;
         constexpr auto music_volume = 30.0f;
+        const sf::Time frame_time = sf::seconds(1.0f / 240.0f);
     }
 
     namespace errors {

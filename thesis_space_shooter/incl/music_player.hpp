@@ -14,7 +14,7 @@
 namespace spsh {
 
 template <music>
-class music_player : sf::NonCopyable {
+class music_player {
 public:
     music_player();
 
