@@ -8,7 +8,7 @@
 namespace spsh {
     class chasing_enemy : public enemy_ship {
     public:
-        explicit chasing_enemy(direction, float = 500.0f, short = 3);
+        explicit chasing_enemy(direction, float = 700.0f, short = 10);
 
         auto change_random_direction() -> bool;
 

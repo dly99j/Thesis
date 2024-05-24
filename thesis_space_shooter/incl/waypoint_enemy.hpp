@@ -7,7 +7,7 @@ namespace spsh {
 
     class waypoint_enemy : public enemy_ship {
     public:
-        explicit waypoint_enemy(direction, float = 500.0f, short = 3);
+        explicit waypoint_enemy(direction, float = 500.0f, short = 12);
 
         auto calculate_direction(sf::Vector2u, std::optional<sf::FloatRect>) -> void override;
 

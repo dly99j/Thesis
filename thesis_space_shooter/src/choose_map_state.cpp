@@ -47,14 +47,14 @@ namespace spsh {
         m_map1_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map1_button.getSize().x) / 2.f, 440.f);
         m_map2_button.setPosition((static_cast<float>(m_window.getSize().x) - m_map2_button.getSize().x) / 2.f, 700.f);
 
-        sf::Text map0_text("Fisrt Map", font, 30);
+        sf::Text map0_text("Nebula Outpost", font, 30);
         map0_text.setFillColor(sf::Color::White);
         map0_text.setPosition(
             m_map0_button.getPosition().x + (m_map0_button.getSize().x - map0_text.getGlobalBounds().width) / 2.f,
             m_map0_button.getPosition().y + (m_map0_button.getSize().y - map0_text.getGlobalBounds().height) / 2.f -
             5.f);
 
-        sf::Text map1_text("Second Map", font, 30);
+        sf::Text map1_text("Stellar Nexus", font, 30);
         map1_text.setFillColor(sf::Color::White);
         map1_text.setPosition(
             m_map1_button.getPosition().x + (
@@ -62,7 +62,7 @@ namespace spsh {
             m_map1_button.getPosition().y + (
                 m_map1_button.getSize().y - map1_text.getGlobalBounds().height) / 2.f - 5.f);
 
-        sf::Text map2_text("Third Map", font, 30);
+        sf::Text map2_text("Lunar Citadel", font, 30);
         map2_text.setFillColor(sf::Color::White);
         map2_text.setPosition(
             m_map2_button.getPosition().x + (m_map2_button.getSize().x - map2_text.getGlobalBounds().width) / 2.f,
