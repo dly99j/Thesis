@@ -79,7 +79,7 @@ namespace spsh {
 
         const auto distance_sq = std::pow(bullet_middle_x - enemy_middle_x, 2) +
                                  std::pow(bullet_middle_y - enemy_middle_y, 2);
-        return distance_sq > std::pow(delta, 2);
+        return distance_sq < std::pow(delta, 2);
     }
 
     auto avoiding_enemy::calculate_direction(
@@ -92,10 +92,10 @@ namespace spsh {
             const auto bullet_middle_x =
                     t_closest_bullet.value().left + t_closest_bullet.value().width / 2.0f;
             const auto enemy_middle_x = get_reduced_texture_rect().left +
-                                        get_reduced_texture_rect().width / 2.0f;
-            if (bullet_middle_x < enemy_middle_x) {
+                                         get_reduced_texture_rect().width / 2.0f;
+            if (bullet_middle_x < enemy_middle_x && m_is_going_left) {
                 set_dierction(direction::right);
-            } else {
+            } else if (bullet_middle_x >= enemy_middle_x && !m_is_going_left) {
                 set_dierction(direction::left);
             }
         } else if (m_is_going_left) {

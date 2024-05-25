@@ -21,22 +21,22 @@ namespace spsh {
     auto sound_player::loader(const sound_effect t_sound) -> void {
         switch (t_sound) {
             case sound_effect::player_rocket:
-                load_effect(t_sound, "../media/audio/player_rocket.wav");
+                load_effect(t_sound, "../media/player_rocket.wav");
                 break;
             case sound_effect::player_hit:
-                load_effect(t_sound, "../media/audio/player_hit.wav");
+                load_effect(t_sound, "../media/player_hit.wav");
                 break;
             case sound_effect::enemy_rocket:
-                load_effect(t_sound, "../media/audio/enemy_rocket.wav");
+                load_effect(t_sound, "../media/enemy_rocket.wav");
                 break;
             case sound_effect::enemy_hit:
-                load_effect(t_sound, "../media/audio/enemy_hit.wav");
+                load_effect(t_sound, "../media/enemy_hit.wav");
                 break;
             case sound_effect::button:
-                load_effect(t_sound, "../media/audio/button.wav");
+                load_effect(t_sound, "../media/button.wav");
                 break;
             case sound_effect::powerup:
-                load_effect(t_sound, "../media/audio/powerup.wav");
+                load_effect(t_sound, "../media/powerup.wav");
                 break;
             default:
                 std::unreachable();

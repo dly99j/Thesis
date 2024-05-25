@@ -399,7 +399,6 @@ namespace spsh {
         send_enemy_projectile();
     }
 
-    //TODO also partially refactor?
     auto playing_state::move_enemy(sf::Time t_delta_time) -> void {
         switch (m_map) {
             case map::first:

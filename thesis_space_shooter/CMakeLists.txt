@@ -2,54 +2,66 @@ cmake_minimum_required(VERSION 3.27)
 project(thesis_space_shooter)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_COMPILER "clang++")
 
-find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
-#find_package(Clang 19 REQUIRED CONFIG)
-#find_package(LLVM 19 REQUIRED CONFIG)
+if (MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-Wall -Wextra -Werror)
+endif()
 
-#include_directories(${LLVM_INCLUDE_DIRS})
-#add_definitions(${LLVM_DEFINITIONS})
+find_package(SFML 2.6.1 COMPONENTS graphics window system audio REQUIRED)
+include_directories(${SFML_INCLUDE_DIR})
 
-include_directories(${CLANG_INCLUDE_DIRS})
-add_definitions(${CLANG_DEFINITIONS})
-add_executable(thesis_space_shooter
+set(SOURCES
         src/main.cpp
         src/playing_state.cpp
-        incl/playing_state.hpp
         src/movable.cpp
-        incl/movable.hpp
         src/player_ship.cpp
-        incl/player_ship.hpp
-        incl/projectile.hpp
         src/projectile.cpp
         src/enemy_ship.cpp
-        incl/enemy_ship.hpp
         src/ship_base.cpp
-        incl/ship_base.hpp
         src/chasing_enemy.cpp
-        incl/chasing_enemy.hpp
         src/powerup.cpp
-        incl/powerup.hpp
         src/game.cpp
+        src/waypoint_enemy.cpp
+        src/main_menu.cpp
+        src/choose_map_state.cpp
+        src/menu_base.cpp
+        src/avoiding_enemy.cpp
+        src/sound_player.cpp
+)
+
+set(HEADERS
+        incl/playing_state.hpp
+        incl/movable.hpp
+        incl/player_ship.hpp
+        incl/projectile.hpp
+        incl/enemy_ship.hpp
+        incl/ship_base.hpp
+        incl/chasing_enemy.hpp
+        incl/powerup.hpp
         incl/game.hpp
         incl/config.hpp
-        src/waypoint_enemy.cpp
         incl/waypoint_enemy.hpp
-        src/main_menu.cpp
         incl/main_menu.hpp
-        src/choose_map_state.cpp
         incl/choose_map_state.hpp
         incl/enums.hpp
-        src/menu_base.cpp
         incl/menu_base.hpp
-        src/avoiding_enemy.cpp
         incl/avoiding_enemy.hpp
         incl/music_player.hpp
-        src/sound_player.cpp
         incl/sound_player.hpp
 )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
-#target_link_libraries(thesis_space_shooter clang-cpp sfml-graphics sfml-window sfml-system)
-target_link_libraries(thesis_space_shooter sfml-graphics sfml-window sfml-system sfml-audio)
+add_executable(thesis_space_shooter ${SOURCES} ${HEADERS})
+target_link_libraries(thesis_space_shooter PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 target_include_directories(thesis_space_shooter PRIVATE ${SFML_INCLUDE_DIR})
+
+if (WIN32)
+    message(STATUS "Configuring for Windows")
+elseif (APPLE)
+    message(STATUS "Configuring for macOS")
+elseif (UNIX AND NOT APPLE)
+    message(STATUS "Configuring for Linux")
+endif()
