@@ -12,6 +12,7 @@ else()
 endif()
 
 if(NOT DEFINED SFML_DIR)
+    #set your own path here
     set(SFML_DIR "C:/Program Files/SFML-2.6.1/lib/cmake/SFML")
 endif()
 
