@@ -3,7 +3,7 @@ project(thesis_space_shooter)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_COMPILER "clang++")
+#set(CMAKE_CXX_COMPILER "clang++")
 
 if (MSVC)
     add_compile_options(/W4 /WX)
@@ -11,8 +11,13 @@ else()
     add_compile_options(-Wall -Wextra -Werror)
 endif()
 
+if(NOT DEFINED SFML_DIR)
+    set(SFML_DIR "C:/Program Files/SFML-2.6.1/lib/cmake/SFML")
+endif()
+
 find_package(SFML 2.6.1 COMPONENTS graphics window system audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
+link_directories(${SFML_DIR}/lib)
 
 set(SOURCES
         src/main.cpp

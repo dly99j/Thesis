@@ -7,7 +7,7 @@
 
 namespace spsh {
     player_ship::player_ship(const direction t_direction, const player_details &t_player_details)
-        : ship_base(t_direction, t_player_details.speed, t_player_details.lives),
+        : ship_base(t_direction, t_player_details.speed, t_player_details.lives), m_bullet_speed(t_player_details.bullet_speed),
           m_is_boost_active(false), m_boosted_speed(t_player_details.boost_multiplier * t_player_details.speed),
           m_original_speed(t_player_details.speed),
           m_speed_boost_duration(sf::seconds(t_player_details.boost_duration)) {
@@ -50,7 +50,7 @@ namespace spsh {
         setup_ammo_text();
 
         for (std::size_t i = 0; i < t_player_details.bullets; ++i) {
-            m_bullets.emplace(direction::up, t_player_details.bullet_speed, projectile_type::rocket);
+            m_bullets.emplace(direction::up, m_bullet_speed, projectile_type::rocket);
         }
     }
 
@@ -67,15 +67,15 @@ namespace spsh {
         m_bullets.pop();
         auto pos = this->get_position();
         pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f - static_cast<float>(proj.get_texture_size().x) /
-                2.0f; //TODO this is ugly as fuck but it works
-        pos.y -= this->get_reduced_texture_rect().height;
+                2.0f;
+        pos.y -= this->get_reduced_texture_rect().height / 2.0f;
         proj.set_position(pos);
         return {std::move(proj)};
     }
 
     auto player_ship::add_ammo(const short t_amount) -> void {
         for (short i = 0; i < t_amount; ++i) {
-            m_bullets.emplace(direction::up, 2000.0f, projectile_type::rocket);
+            m_bullets.emplace(direction::up, m_bullet_speed, projectile_type::rocket);
         }
     }
 

@@ -24,7 +24,7 @@ namespace spsh {
         if (!needs_to_shoot(t_player_info.value())) {
             return std::nullopt;
         }
-        auto proj = projectile(direction::down, 2000.0f, projectile_type::rocket);
+        auto proj = projectile(direction::down, constants::enemy_bullet_speed, projectile_type::rocket);
         proj.set_texture(m_bullet_texture);
         auto pos = this->get_position();
         pos.x += static_cast<float>(this->get_texture_size().x) / 2.0f

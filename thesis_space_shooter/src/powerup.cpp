@@ -55,9 +55,9 @@ namespace spsh {
     }
 
     //TODO why is it called m_type in the param list
-    auto powerup::generate_object(const powerup_type m_type, const sf::Vector2f t_pos,
+    auto powerup::generate_object(const powerup_type t_type, const sf::Vector2f t_pos,
                                   std::map<powerup_type, sf::Texture> &t_textures) -> powerup {
-        switch (m_type) {
+        switch (t_type) {
             case powerup_type::health: {
                 auto health = powerup(powerup_type::health); //random generated variety
                 health.set_texture(t_textures[powerup_type::health]);

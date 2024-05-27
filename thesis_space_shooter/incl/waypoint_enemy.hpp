@@ -4,10 +4,9 @@
 #include <iostream>
 
 namespace spsh {
-
     class waypoint_enemy : public enemy_ship {
     public:
-        explicit waypoint_enemy(direction, float = 500.0f, short = 12);
+        explicit waypoint_enemy(direction, float = constants::waypoint_enemy_speed, short = constants::waypoint_enemy_lives);
 
         auto calculate_direction(sf::Vector2u, std::optional<sf::FloatRect>) -> void override;
 
@@ -20,7 +19,6 @@ namespace spsh {
         sf::Vector2f m_waypoint;
         bool m_need_new_gen;
     };
-
 } // spsh
 
 #endif //WAYPOINT_ENEMY_HPP

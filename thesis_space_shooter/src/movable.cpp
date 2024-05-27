@@ -37,7 +37,6 @@ namespace spsh {
         return m_sprite.getPosition();
     }
 
-    //TODO we should probably make the rect smaller
     auto movable::get_reduced_texture_rect() const -> sf::FloatRect {
         const auto &[left, top] = get_position();
         const auto &rect = m_sprite.getTextureRect();

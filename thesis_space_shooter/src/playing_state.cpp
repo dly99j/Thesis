@@ -28,9 +28,6 @@ namespace spsh {
         const auto window_height = static_cast<float>(m_window.getSize().y);
         const auto player_width = m_player->get_reduced_texture_rect().width;
         const auto enemy_width = m_enemy->get_reduced_texture_rect().width;
-        // auto player_height =
-        // static_cast<float>(m_player.get_reduced_texture_rect().height);
-        // TODO center correctly
         m_player->set_position({
             window_width / 2.0f - player_width / 2.0f,
             window_height - window_height / 10.0f
@@ -58,7 +55,7 @@ namespace spsh {
             while (time_since_update > constants::frame_time) {
                 time_since_update -= constants::frame_time;
                 handle_events();
-                update(delta_time);
+                update(constants::frame_time);
             }
             detect_collision();
             if (handle_game_over()) {
@@ -440,7 +437,7 @@ namespace spsh {
         std::vector<powerup> collided_pwu;
         for (auto &proj: m_projectiles) {
             if (m_player->get_reduced_texture_rect().intersects(
-                proj.get_reduced_texture_rect())) {
+                proj.get_reduced_texture_rect()) && proj.get_direction() == direction::down) {
                 collided_proj.push_back(proj);
                 m_player->decrease_life();
                 m_sound_player.play(sound_effect::player_hit);
@@ -601,7 +598,7 @@ namespace spsh {
             return;
         }
         m_time_of_last_asteroid = m_asteroid_clock.getElapsedTime();
-        projectile generated(direction::down, 2000.0f, projectile_type::asteroid);
+        projectile generated(direction::down, constants::asteroid_speed, projectile_type::asteroid);
         generated.set_texture(m_asteroid_texture);
         generated.set_position(
             {generate_random_coords(m_asteroid_texture.getSize()).x, 0.0f});

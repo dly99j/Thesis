@@ -42,6 +42,7 @@ private:
   sf::Text m_ammo_text;
   sf::Texture m_bullet_texture;
 
+  float m_bullet_speed;
   bool m_is_boost_active;
   sf::Clock m_speed_boost_timer;
   float m_boosted_speed;
