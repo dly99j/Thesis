@@ -54,7 +54,6 @@ namespace spsh {
         return {generated};
     }
 
-    //TODO why is it called m_type in the param list
     auto powerup::generate_object(const powerup_type t_type, const sf::Vector2f t_pos,
                                   std::map<powerup_type, sf::Texture> &t_textures) -> powerup {
         switch (t_type) {

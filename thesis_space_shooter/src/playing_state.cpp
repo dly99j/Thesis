@@ -69,7 +69,7 @@ namespace spsh {
         switch (m_map) {
             case map::first:
                 m_player = std::make_unique<player_ship>(direction::stationary,
-                                                         constants::firts_ship);
+                                                         constants::first_ship);
                 m_enemy = std::make_unique<waypoint_enemy>(direction::stationary);
                 break;
             case map::second:
@@ -125,7 +125,7 @@ namespace spsh {
 
     auto playing_state::pause_game() -> bool {
         m_sound_player.play(sound_effect::button);
-        m_player->set_dierction(direction::stationary);
+        m_player->set_direction(direction::stationary);
         auto [resume_button, quit_button] = draw_pause_game();
         while (m_window.isOpen()) {
             sf::Event e{};
@@ -138,14 +138,12 @@ namespace spsh {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
                 if (resume_button.getGlobalBounds().contains(mouse_pos)) {
-                    sf::Event e{};
                     while (m_window.pollEvent(e)) {
                     }
                     m_sound_player.play(sound_effect::button);
                     return false;
                 }
                 if (quit_button.getGlobalBounds().contains(mouse_pos)) {
-                    sf::Event e{};
                     while (m_window.pollEvent(e)) {
                     }
                     return true;
@@ -200,7 +198,6 @@ namespace spsh {
             button_y + button_height + 30.f +
             (button_height - quit_text.getLocalBounds().height) / 2.f - 5.f);
 
-        //m_window.clear(sf::Color(30, 30, 30, 150)); // Semi-transparent black background
         sf::RectangleShape pause_overlay(
             static_cast<sf::Vector2f>(m_window.getSize()));
         pause_overlay.setFillColor(sf::Color(0, 0, 0, 128));
@@ -279,7 +276,7 @@ namespace spsh {
 
     auto playing_state::handle_input(const bool t_is_pressed) -> void {
         if (!t_is_pressed) {
-            m_player->set_dierction(direction::stationary);
+            m_player->set_direction(direction::stationary);
         }
 
         std::vector<direction> directions;
@@ -348,7 +345,7 @@ namespace spsh {
             final_direction = direction::stationary;
         }
 
-        m_player->set_dierction(final_direction);
+        m_player->set_direction(final_direction);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             if (auto &&proj = m_player->shoot(std::nullopt); proj.has_value()) {

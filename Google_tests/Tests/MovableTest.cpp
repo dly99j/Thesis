@@ -50,7 +50,7 @@ TEST_F(MovableTest, DirectionTest) {
     EXPECT_EQ(TestObject->get_direction(), spsh::direction::stationary);
     EXPECT_NE(TestObject->get_direction(), spsh::direction::up);
 
-    TestObject->set_dierction(spsh::direction::left);
+    TestObject->set_direction(spsh::direction::left);
 
     EXPECT_EQ(TestObject->get_direction(), spsh::direction::left);
     EXPECT_NE(TestObject->get_direction(), spsh::direction::stationary);

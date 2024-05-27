@@ -56,7 +56,7 @@ namespace spsh {
 
     auto player_ship::shoot(const std::optional<sf::FloatRect> t_nothing) -> std::optional<projectile> {
         if (t_nothing.has_value()) {
-            std::cerr << "Fatal developer error: player_ship::shoot should never recive a param value\n";
+            std::cerr << "Fatal developer error: player_ship::shoot should never receive a param value\n";
             exit(errors::OPTIONAL_ERROR);
         }
         if (m_bullets.empty()) {

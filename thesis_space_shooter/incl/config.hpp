@@ -16,7 +16,7 @@ namespace spsh {
     };
 
     namespace constants {
-        constexpr player_details firts_ship{350.0f, 5, 10, 600.0f, 2.0f, 10.0f, map::first};
+        constexpr player_details first_ship{350.0f, 5, 10, 600.0f, 2.0f, 10.0f, map::first};
         constexpr player_details second_ship{300.0f, 6, 5, 600.0f, 2.5f, 8.0f, map::second};
         constexpr player_details third_ship{350.0f, 600, 1005, 600.0f, 3.0f, 1.0f, map::third};
 

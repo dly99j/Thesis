@@ -35,7 +35,7 @@ namespace spsh {
 
         auto get_texture_size() const -> sf::Vector2u;
 
-        auto set_dierction(direction) -> void;
+        auto set_direction(direction) -> void;
 
         auto set_texture(const sf::Texture&) -> void;
 

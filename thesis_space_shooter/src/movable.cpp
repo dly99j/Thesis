@@ -1,8 +1,5 @@
 #include "../incl/movable.hpp"
 
-#include <forward_list>
-#include <iostream>
-#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -42,18 +39,12 @@ namespace spsh {
         const auto &rect = m_sprite.getTextureRect();
         const auto &width = static_cast<float>(rect.width);
         const auto &height = static_cast<float>(rect.height);
-        //return {left - width / 4.0f, top - height / 1.0f, width / 2.0f, height / 4.0f * 3.0f};
-        //if (dynamic_cast<const spsh::player_ship*>(this) != nullptr) {
-        //    return {left + width / 4.0f, top / 4.0f, width / 2.0f, height * 0.75f};
-        //}
         return {left + width / 4.0f, top, width / 2.0f, height * 0.8f};
     }
 
     auto movable::get_texture_rect() const -> sf::FloatRect {
         const auto &[left, top] = get_position();
         const auto &rect = m_sprite.getTextureRect();
-        //const auto& left = static_cast<float>(rect.left);
-        //const auto& top = static_cast<float>(rect.top);
         const auto &width = static_cast<float>(rect.width);
         const auto &height = static_cast<float>(rect.height);
         return {left, top, width, height};
@@ -63,7 +54,7 @@ namespace spsh {
         return m_sprite.getTexture()->getSize();
     }
 
-    auto movable::set_dierction(const direction t_direction) -> void {
+    auto movable::set_direction(const direction t_direction) -> void {
         m_direction = t_direction;
     }
 

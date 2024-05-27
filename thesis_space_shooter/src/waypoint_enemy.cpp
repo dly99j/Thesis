@@ -64,25 +64,25 @@ namespace spsh {
 
         if (width_difference > critical_diff * height_difference) {
             if (enemy_to_the_right()) {
-                set_dierction(direction::left);
+                set_direction(direction::left);
             } else {
-                set_dierction(direction::right);
+                set_direction(direction::right);
             }
         } else if (height_difference > critical_diff * width_difference) {
             if (enemy_lower()) {
-                set_dierction(direction::up);
+                set_direction(direction::up);
             } else {
-                set_dierction(direction::down);
+                set_direction(direction::down);
             }
         } else {
             if (enemy_to_the_right() && enemy_lower()) {
-                set_dierction(direction::up_left);
+                set_direction(direction::up_left);
             } else if (!enemy_to_the_right() && enemy_lower()) {
-                set_dierction(direction::up_right);
+                set_direction(direction::up_right);
             } else if (enemy_to_the_right() && !enemy_lower()) {
-                set_dierction(direction::down_left);
+                set_direction(direction::down_left);
             } else {
-                set_dierction(direction::down_right);
+                set_direction(direction::down_right);
             }
         }
     }

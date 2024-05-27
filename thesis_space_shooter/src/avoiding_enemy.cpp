@@ -5,28 +5,14 @@ namespace spsh {
                                    const short t_lives)
         : enemy_ship(t_direction, t_speed, t_lives) {
         if (!m_texture.loadFromFile("../media/eship2.png")) {
-            std::cerr << "error loading player\n";
+            std::cerr << "error loading avoiding_enemy texture\n";
             exit(errors::ASSET_LOAD_ERROR);
         }
         set_texture(m_texture);
 
-        if (m_dist(m_gen) < 5) {
-            m_is_going_left = true;
-        } else {
-            m_is_going_left = false;
-        }
-
-        if (m_dist(m_gen) < 5) {
-            m_is_going_diagonally = true;
-        } else {
-            m_is_going_diagonally = false;
-        }
-
-        if (m_dist(m_gen) < 5) {
-            m_is_going_upwards = true;
-        } else {
-            m_is_going_upwards = false;
-        }
+        m_is_going_left = m_dist(m_gen) < 5;
+        m_is_going_diagonally = m_dist(m_gen) < 5;
+        m_is_going_upwards = m_dist(m_gen) < 5;
 
         m_direction_timer.restart();
     }
@@ -94,9 +80,9 @@ namespace spsh {
             const auto enemy_middle_x = get_reduced_texture_rect().left +
                                          get_reduced_texture_rect().width / 2.0f;
             if (bullet_middle_x < enemy_middle_x && m_is_going_left) {
-                set_dierction(direction::right);
+                set_direction(direction::right);
             } else if (bullet_middle_x >= enemy_middle_x && !m_is_going_left) {
-                set_dierction(direction::left);
+                set_direction(direction::left);
             }
         } else if (m_is_going_left) {
             if (m_is_going_diagonally) {
@@ -105,22 +91,22 @@ namespace spsh {
                     if (pos_top < 5.0f) {
                         m_is_going_upwards = false;
                         m_is_going_diagonally = false;
-                        set_dierction(direction::left);
+                        set_direction(direction::left);
                     } else {
-                        set_dierction(direction::up_left);
+                        set_direction(direction::up_left);
                     }
                 } else {
                     const auto pos_bot =
                             get_reduced_texture_rect().top + get_reduced_texture_rect().height;
                     if (pos_bot > static_cast<float>(t_screen_dimensions.y) / 3.0f) {
                         m_is_going_diagonally = false;
-                        set_dierction(direction::left);
+                        set_direction(direction::left);
                     } else {
-                        set_dierction(direction::down_left);
+                        set_direction(direction::down_left);
                     }
                 }
             } else {
-                set_dierction(direction::left);
+                set_direction(direction::left);
             }
         } else {
             if (m_is_going_diagonally) {
@@ -129,22 +115,22 @@ namespace spsh {
                     if (pos_top < 5.0f) {
                         m_is_going_upwards = false;
                         m_is_going_diagonally = false;
-                        set_dierction(direction::right);
+                        set_direction(direction::right);
                     } else {
-                        set_dierction(direction::up_right);
+                        set_direction(direction::up_right);
                     }
                 } else {
                     const auto pos_bot =
                             get_reduced_texture_rect().top + get_reduced_texture_rect().height;
                     if (pos_bot > static_cast<float>(t_screen_dimensions.y) / 3.0f) {
                         m_is_going_diagonally = false;
-                        set_dierction(direction::right);
+                        set_direction(direction::right);
                     } else {
-                        set_dierction(direction::down_right);
+                        set_direction(direction::down_right);
                     }
                 }
             } else {
-                set_dierction(direction::right);
+                set_direction(direction::right);
             }
         }
     }

@@ -4,7 +4,7 @@ namespace spsh {
     chasing_enemy::chasing_enemy(const direction t_direction, const float t_speed, const short t_lives)
         : enemy_ship(t_direction, t_speed, t_lives) {
         if (!m_texture.loadFromFile("../media/eship1.png")) {
-            std::cerr << "error loading player\n";
+            std::cerr << "error loading chasing_enemy texture\n";
             exit(errors::ASSET_LOAD_ERROR);
         }
         set_texture(m_texture);
@@ -30,27 +30,27 @@ namespace spsh {
         const auto player_middle_x = t_player_rect.value().left + t_player_rect.value().width / 2.0f;
         const auto enemy_middle_x = get_reduced_texture_rect().left + get_reduced_texture_rect().width / 2.0f;
         auto delta = static_cast<float>(t_screen_dimensions.x) / 7.0f;
-        delta = delta < player_width ? delta : player_width;
+        delta = std::min(delta, player_width);
         if (const auto curr_delta = std::abs(enemy_middle_x - player_middle_x); curr_delta < delta) {
-            set_dierction(direction::stationary);
+            set_direction(direction::stationary);
         } else {
             if (change_random_direction()) {
                 const auto rand = m_dist(m_gen);
                 if (enemy_middle_x > player_middle_x) {
                     if (rand < 4) {
-                        set_dierction(direction::up_left);
+                        set_direction(direction::up_left);
                     } else if (rand > 6) {
-                        set_dierction(direction::down_left);
+                        set_direction(direction::down_left);
                     } else {
-                        set_dierction(direction::left);
+                        set_direction(direction::left);
                     }
                 } else {
                     if (rand < 4) {
-                        set_dierction(direction::up_right);
+                        set_direction(direction::up_right);
                     } else if (rand > 6) {
-                        set_dierction(direction::down_right);
+                        set_direction(direction::down_right);
                     } else {
-                        set_dierction(direction::right);
+                        set_direction(direction::right);
                     }
                 }
             } else {
@@ -59,22 +59,22 @@ namespace spsh {
                 if (enemy_middle_x > player_middle_x) {
                     if ((get_direction() == direction::up_left || get_direction() == direction::up_right)
                         && pos_top > 5.0f) {
-                        set_dierction(direction::up_left);
+                        set_direction(direction::up_left);
                     } else if ((get_direction() == direction::down_left || get_direction() == direction::down_right)
                                && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
-                        set_dierction(direction::down_left);
+                        set_direction(direction::down_left);
                     } else {
-                        set_dierction(direction::left);
+                        set_direction(direction::left);
                     }
                 } else {
                     if ((get_direction() == direction::up_left || get_direction() == direction::up_right)
                         && pos_top > 5.0f) {
-                        set_dierction(direction::up_right);
+                        set_direction(direction::up_right);
                     } else if ((get_direction() == direction::down_left || get_direction() == direction::down_right)
                                && pos_bot < static_cast<float>(t_screen_dimensions.y) / 3.0f) {
-                        set_dierction(direction::down_right);
+                        set_direction(direction::down_right);
                     } else {
-                        set_dierction(direction::right);
+                        set_direction(direction::right);
                     }
                 }
             }
