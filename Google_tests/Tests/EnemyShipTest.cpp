@@ -1,6 +1,5 @@
 #include "enemy_ship.hpp"
 #include <gtest/gtest.h>
-#include <SFML/Graphics/Texture.hpp>
 
 class TestEnemyShip : public spsh::enemy_ship {
 public:
@@ -39,7 +38,8 @@ TEST_F(EnemyShipTest, ShootTest) {
     auto projectile = TestObject->shoot(player_rect);
     EXPECT_TRUE(projectile.has_value());
     if (projectile) {
-        EXPECT_EQ(projectile->get_position().y, TestObject->get_position().y + TestObject->get_reduced_texture_rect().height);
+        EXPECT_EQ(projectile->get_position().y,
+                  TestObject->get_position().y + TestObject->get_reduced_texture_rect().height);
         EXPECT_EQ(projectile->get_direction(), spsh::direction::down);
     }
 }

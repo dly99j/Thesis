@@ -47,7 +47,7 @@ namespace spsh {
     auto enemy_ship::needs_to_shoot(const sf::FloatRect t_player_rect) const -> bool {
         const auto x_distance = std::abs(t_player_rect.left - get_reduced_texture_rect().left);
         const auto behind = t_player_rect.top < get_reduced_texture_rect().top;
-        if (x_distance < t_player_rect.width * 3 && !behind) {
+        if (x_distance < t_player_rect.width * 4 && !behind) {
             return true;
         }
         return false;

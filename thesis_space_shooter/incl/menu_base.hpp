@@ -5,7 +5,6 @@
 #include "config.hpp"
 
 namespace spsh {
-
     class menu_base {
     protected:
         explicit menu_base(sf::RenderWindow &);

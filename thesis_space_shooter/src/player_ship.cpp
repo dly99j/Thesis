@@ -7,7 +7,8 @@
 
 namespace spsh {
     player_ship::player_ship(const direction t_direction, const player_details &t_player_details)
-        : ship_base(t_direction, t_player_details.speed, t_player_details.lives), m_bullet_speed(t_player_details.bullet_speed),
+        : ship_base(t_direction, t_player_details.speed, t_player_details.lives),
+          m_bullet_speed(t_player_details.bullet_speed),
           m_is_boost_active(false), m_boosted_speed(t_player_details.boost_multiplier * t_player_details.speed),
           m_original_speed(t_player_details.speed),
           m_speed_boost_duration(sf::seconds(t_player_details.boost_duration)) {

@@ -9,7 +9,6 @@
 #include <iostream>
 
 namespace spsh {
-
     class powerup : public movable {
     public:
         explicit powerup(powerup_type t_type);

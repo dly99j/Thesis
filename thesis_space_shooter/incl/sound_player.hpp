@@ -10,24 +10,22 @@
 #include "config.hpp"
 
 namespace spsh {
+    class sound_player {
+    public:
+        sound_player() = default;
 
-class sound_player {
-public:
-    sound_player() = default;
+        sound_player(std::initializer_list<sound_effect>);
 
-    sound_player(std::initializer_list<sound_effect>);
+        auto play(sound_effect) -> void;
 
-    auto play(sound_effect) -> void;
+    private:
+        auto loader(sound_effect) -> void;
 
-private:
-    auto loader(sound_effect) -> void;
+        auto load_effect(sound_effect, const std::string &) -> void;
 
-    auto load_effect(sound_effect, const std::string&) -> void;
-
-private:
-    std::map<sound_effect, std::pair<sf::SoundBuffer, sf::Sound>> m_sounds;
-};
-
+    private:
+        std::map<sound_effect, std::pair<sf::SoundBuffer, sf::Sound> > m_sounds;
+    };
 } // spsh
 
 #endif //SOUND_PLAYER_HPP

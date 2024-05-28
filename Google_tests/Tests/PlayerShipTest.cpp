@@ -1,6 +1,5 @@
 #include "player_ship.hpp"
 #include <gtest/gtest.h>
-#include <SFML/Graphics/Texture.hpp>
 
 class PlayerShipTest : public ::testing::Test {
 protected:
@@ -79,4 +78,3 @@ TEST_F(PlayerShipTest, AmmoTextTest) {
     TestObject->add_ammo(5);
     EXPECT_EQ(TestObject->get_ammo_text().getString(), "15 rockets");
 }
-

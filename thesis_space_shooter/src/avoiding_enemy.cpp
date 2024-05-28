@@ -78,7 +78,7 @@ namespace spsh {
             const auto bullet_middle_x =
                     t_closest_bullet.value().left + t_closest_bullet.value().width / 2.0f;
             const auto enemy_middle_x = get_reduced_texture_rect().left +
-                                         get_reduced_texture_rect().width / 2.0f;
+                                        get_reduced_texture_rect().width / 2.0f;
             if (bullet_middle_x < enemy_middle_x && m_is_going_left) {
                 set_direction(direction::right);
             } else if (bullet_middle_x >= enemy_middle_x && !m_is_going_left) {

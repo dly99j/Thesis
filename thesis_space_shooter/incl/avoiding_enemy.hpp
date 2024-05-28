@@ -7,7 +7,8 @@
 namespace spsh {
     class avoiding_enemy : public enemy_ship {
     public:
-        explicit avoiding_enemy(direction, float = constants::avoiding_enemy_speed, short = constants::avoiding_enemy_lives);
+        explicit avoiding_enemy(direction, float = constants::avoiding_enemy_speed,
+                                short = constants::avoiding_enemy_lives);
 
         auto change_random_direction() -> void;
 

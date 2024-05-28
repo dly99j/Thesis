@@ -6,7 +6,6 @@
 #include "sound_player.hpp"
 
 namespace spsh {
-
     class projectile : public movable {
     public:
         projectile(direction, float, projectile_type);

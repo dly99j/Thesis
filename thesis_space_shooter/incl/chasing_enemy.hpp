@@ -8,7 +8,8 @@
 namespace spsh {
     class chasing_enemy : public enemy_ship {
     public:
-        explicit chasing_enemy(direction, float = constants::chasing_enemy_speed, short = constants::chasing_enemy_lives);
+        explicit chasing_enemy(direction, float = constants::chasing_enemy_speed,
+                               short = constants::chasing_enemy_lives);
 
         auto change_random_direction() -> bool;
 

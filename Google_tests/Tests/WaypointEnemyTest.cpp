@@ -1,6 +1,5 @@
 #include "waypoint_enemy.hpp"
 #include <gtest/gtest.h>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
 class WaypointEnemyTest : public ::testing::Test {
@@ -18,7 +17,7 @@ protected:
 TEST_F(WaypointEnemyTest, ConstructorTest) {
     EXPECT_EQ(TestObject->get_direction(), spsh::direction::stationary);
     EXPECT_EQ(TestObject->get_position(), sf::Vector2f(0, 0));
-    EXPECT_EQ(TestObject->get_speed(), 500.0f);
+    EXPECT_EQ(TestObject->get_speed(), 200.0f);
     EXPECT_EQ(TestObject->get_lives(), 12);
     EXPECT_TRUE(TestObject->is_alive());
 }

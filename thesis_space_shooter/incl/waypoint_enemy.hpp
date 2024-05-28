@@ -6,7 +6,8 @@
 namespace spsh {
     class waypoint_enemy : public enemy_ship {
     public:
-        explicit waypoint_enemy(direction, float = constants::waypoint_enemy_speed, short = constants::waypoint_enemy_lives);
+        explicit waypoint_enemy(direction, float = constants::waypoint_enemy_speed,
+                                short = constants::waypoint_enemy_lives);
 
         auto calculate_direction(sf::Vector2u, std::optional<sf::FloatRect>) -> void override;
 

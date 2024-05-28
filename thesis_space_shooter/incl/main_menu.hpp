@@ -8,7 +8,6 @@
 #include "config.hpp"
 
 namespace spsh {
-
     class main_menu : public menu_base {
     public:
         explicit main_menu(sf::RenderWindow &);

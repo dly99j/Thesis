@@ -24,7 +24,6 @@ namespace spsh {
                         m_music_player.stop();
                         playing_state ps(m_window, curr_map);
                         ps.run();
-                        //Has to be played here because the playing state instance ceases to exist
                         m_sound_player.play(sound_effect::button);
                         m_music_player.play();
                         break;

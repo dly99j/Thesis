@@ -6,6 +6,7 @@
 class MovableTest : public ::testing::Test {
 protected:
     std::unique_ptr<spsh::movable> TestObject;
+
     void SetUp() override {
         TestObject = std::make_unique<spsh::movable>(spsh::direction::stationary, 0.0f);
     }
@@ -14,14 +15,12 @@ protected:
     }
 };
 
-// Test case for the constructor
 TEST_F(MovableTest, ConstructorTest) {
     EXPECT_EQ(TestObject->get_direction(), spsh::direction::stationary);
     EXPECT_EQ(TestObject->get_position(), sf::Vector2f(0, 0));
     EXPECT_EQ(TestObject->get_speed(), 0.0f);
 }
 
-// Test case for the equality operator
 TEST_F(MovableTest, EqualityOperatorTest) {
     spsh::movable Equal(spsh::direction::stationary, 0.0f);
     spsh::movable NotEqualDirection(spsh::direction::up, 0.0f);

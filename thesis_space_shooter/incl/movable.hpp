@@ -6,7 +6,6 @@
 #include "enums.hpp"
 
 namespace spsh {
-
     class movable {
     public:
         explicit movable(direction, float);
@@ -14,7 +13,7 @@ namespace spsh {
         virtual ~movable();
 
         [[nodiscard]]
-        auto operator==(const movable& other) const -> bool;
+        auto operator==(const movable &other) const -> bool;
 
         [[nodiscard]]
         auto get_speed() const -> float;
@@ -37,18 +36,18 @@ namespace spsh {
 
         auto set_direction(direction) -> void;
 
-        auto set_texture(const sf::Texture&) -> void;
+        auto set_texture(const sf::Texture &) -> void;
 
         auto set_position(sf::Vector2f) -> void;
 
-        virtual auto draw(sf::RenderTarget&) -> void;
+        virtual auto draw(sf::RenderTarget &) -> void;
 
         auto calculate_move() const -> sf::Vector2f;
 
         auto move(sf::Vector2f) -> void;
 
         [[nodiscard]]
-        auto is_off_map(const std::unique_ptr<sf::Vector2u>& t_window_size) const -> bool;
+        auto is_off_map(const std::unique_ptr<sf::Vector2u> &t_window_size) const -> bool;
 
     protected:
         //auto virtual load_resources() -> void = 0;

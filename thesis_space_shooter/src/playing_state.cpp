@@ -434,7 +434,7 @@ namespace spsh {
         std::vector<powerup> collided_pwu;
         for (auto &proj: m_projectiles) {
             if (m_player->get_reduced_texture_rect().intersects(
-                proj.get_reduced_texture_rect()) && proj.get_direction() == direction::down) {
+                    proj.get_reduced_texture_rect()) && proj.get_direction() == direction::down) {
                 collided_proj.push_back(proj);
                 m_player->decrease_life();
                 m_sound_player.play(sound_effect::player_hit);
@@ -496,7 +496,6 @@ namespace spsh {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 if (const auto mouse_pos = sf::Vector2f(sf::Mouse::getPosition(m_window));
                     main_menu_button.getGlobalBounds().contains(mouse_pos)) {
-                    sf::Event e{};
                     while (m_window.pollEvent(e)) {
                     }
                     return true;

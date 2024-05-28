@@ -1,7 +1,6 @@
 #include "avoiding_enemy.hpp"
 #include <gtest/gtest.h>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Clock.hpp>
+
 
 class AvoidingEnemyTest : public ::testing::Test {
 protected:
@@ -18,7 +17,7 @@ protected:
 TEST_F(AvoidingEnemyTest, ConstructorTest) {
     EXPECT_EQ(TestObject->get_direction(), spsh::direction::stationary);
     EXPECT_EQ(TestObject->get_position(), sf::Vector2f(0, 0));
-    EXPECT_EQ(TestObject->get_speed(), 650.0f);
+    EXPECT_EQ(TestObject->get_speed(), 225.0f);
     EXPECT_EQ(TestObject->get_lives(), 11);
     EXPECT_TRUE(TestObject->is_alive());
 }
@@ -34,4 +33,3 @@ TEST_F(AvoidingEnemyTest, IsBulletCloseTest) {
 
     EXPECT_TRUE(TestObject->is_bullet_close(screen_dimensions, bullet_rect_close));
 }
-

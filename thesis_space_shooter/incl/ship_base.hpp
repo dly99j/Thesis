@@ -14,7 +14,7 @@ namespace spsh {
         [[nodiscard]]
         auto virtual shoot(std::optional<sf::FloatRect>) -> std::optional<projectile> = 0;
 
-        auto virtual put_back_on_map(const std::unique_ptr<sf::Vector2u>&) -> void final;
+        auto virtual put_back_on_map(const std::unique_ptr<sf::Vector2u> &) -> void final;
 
         auto decrease_life(short = 1) -> void;
 

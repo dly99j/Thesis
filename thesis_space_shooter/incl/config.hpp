@@ -4,7 +4,6 @@
 #include "enums.hpp"
 
 namespace spsh {
-
     struct player_details {
         float speed;
         short lives;
@@ -18,7 +17,7 @@ namespace spsh {
     namespace constants {
         constexpr player_details first_ship{350.0f, 5, 10, 600.0f, 2.0f, 10.0f, map::first};
         constexpr player_details second_ship{300.0f, 6, 5, 600.0f, 2.5f, 8.0f, map::second};
-        constexpr player_details third_ship{350.0f, 600, 1005, 600.0f, 3.0f, 1.0f, map::third};
+        constexpr player_details third_ship{350.0f, 6, 15, 600.0f, 3.0f, 7.0f, map::third};
 
         constexpr float chasing_enemy_speed = 250.0f;
         constexpr short chasing_enemy_lives = 10;
@@ -32,9 +31,9 @@ namespace spsh {
         constexpr float enemy_bullet_speed = 600.0f;
         constexpr float asteroid_speed = 600.0f;
 
-        constexpr auto pwu_spawn_interval = 2.0f;
-        constexpr auto change_direction_interval = 3.0f;
-        constexpr auto music_volume = 30.0f;
+        constexpr float pwu_spawn_interval = 2.0f;
+        constexpr float change_direction_interval = 3.0f;
+        constexpr float music_volume = 30.0f;
         const sf::Time frame_time = sf::seconds(1.0f / 240.0f);
     }
 
