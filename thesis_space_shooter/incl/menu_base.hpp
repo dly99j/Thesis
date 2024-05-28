@@ -5,21 +5,21 @@
 #include "config.hpp"
 
 namespace spsh {
-    class menu_base {
-    protected:
-        explicit menu_base(sf::RenderWindow &);
+class menu_base {
+   protected:
+    explicit menu_base(sf::RenderWindow&);
 
-        virtual ~menu_base() = default;
+    virtual ~menu_base() = default;
 
-        auto virtual load_image() -> void = 0;
+    auto virtual load_image() -> void = 0;
 
-        auto virtual set_background() -> void final;
+    auto virtual set_background() -> void final;
 
-    protected:
-        sf::RenderWindow &m_window;
-        sf::Texture m_background_texture;
-        sf::Sprite m_background_sprite;
-    };
-} // spsh
+   protected:
+    sf::RenderWindow& m_window;
+    sf::Texture m_background_texture;
+    sf::Sprite m_background_sprite;
+};
+}  // namespace spsh
 
-#endif //MENU_BASE_HPP
+#endif  //MENU_BASE_HPP

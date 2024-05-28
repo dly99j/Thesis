@@ -1,26 +1,26 @@
 #ifndef CHOOSE_MAP_STATE_HPP
 #define CHOOSE_MAP_STATE_HPP
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <utility>
-#include <SFML/Graphics.hpp>
+#include "config.hpp"
 #include "enums.hpp"
 #include "menu_base.hpp"
-#include "config.hpp"
 
 namespace spsh {
-    class choose_map_state : public menu_base {
-    public:
-        explicit choose_map_state(sf::RenderWindow &);
+class choose_map_state : public menu_base {
+   public:
+    explicit choose_map_state(sf::RenderWindow&);
 
-        auto load_image() -> void final;
+    auto load_image() -> void final;
 
-        [[nodiscard]]
-        auto display() -> std::optional<map>;
+    [[nodiscard]]
+    auto display() -> std::optional<map>;
 
-    private:
-        sf::Texture m_bg0, m_bg1, m_bg2;
-        sf::RectangleShape m_map0_button, m_map1_button, m_map2_button;
-    };
-} // spsh
+   private:
+    sf::Texture m_bg0, m_bg1, m_bg2;
+    sf::RectangleShape m_map0_button, m_map1_button, m_map2_button;
+};
+}  // namespace spsh
 
-#endif //CHOOSE_MAP_STATE_HPP
+#endif  //CHOOSE_MAP_STATE_HPP

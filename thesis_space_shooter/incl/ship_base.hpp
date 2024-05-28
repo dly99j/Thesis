@@ -5,31 +5,32 @@
 #include "sound_player.hpp"
 
 namespace spsh {
-    class ship_base : public movable {
-    public:
-        explicit ship_base(direction, float, short);
+class ship_base : public movable {
+   public:
+    explicit ship_base(direction, float, short);
 
-        virtual ~ship_base() = default;
+    virtual ~ship_base() = default;
 
-        [[nodiscard]]
-        auto virtual shoot(std::optional<sf::FloatRect>) -> std::optional<projectile> = 0;
+    [[nodiscard]] auto virtual shoot(std::optional<sf::FloatRect>)
+        -> std::optional<projectile> = 0;
 
-        auto virtual put_back_on_map(const std::unique_ptr<sf::Vector2u> &) -> void final;
+    auto virtual put_back_on_map(const std::unique_ptr<sf::Vector2u>&)
+        -> void final;
 
-        auto decrease_life(short = 1) -> void;
+    auto decrease_life(short = 1) -> void;
 
-        auto increase_life(short = 1) -> void;
+    auto increase_life(short = 1) -> void;
 
-        [[nodiscard]]
-        auto get_lives() const -> short;
+    [[nodiscard]]
+    auto get_lives() const -> short;
 
-        [[nodiscard]]
-        auto is_alive() const -> bool;
+    [[nodiscard]]
+    auto is_alive() const -> bool;
 
-    protected:
-        sf::Texture m_texture;
-        short m_lives;
-    };
-} // spsh
+   protected:
+    sf::Texture m_texture;
+    short m_lives;
+};
+}  // namespace spsh
 
-#endif //SHIP_BASE_HPP
+#endif  //SHIP_BASE_HPP

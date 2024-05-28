@@ -3,7 +3,7 @@
   <component name="CMakePythonSetting">
     <option name="pythonIntegrationState" value="YES" />
   </component>
-  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/Google_tests">
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/thesis_space_shooter">
     <contentRoot DIR="$PROJECT_DIR$" />
   </component>
 </project>
