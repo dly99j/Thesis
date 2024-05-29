@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(hello_test)
+project(Test)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -57,17 +57,17 @@ set(SOURCE_FILES
 )
 include_directories(../thesis_space_shooter/incl)
 add_executable(
-        hello_test
+        Test
         Tests/MovableTest.cpp
         Tests/ShipBaseTest.cpp
         ${SOURCE_FILES}
 )
 target_link_libraries(
-        hello_test
+        Test
         gtest_main
         gmock
         ${SFML_LIBS}
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(Test)
